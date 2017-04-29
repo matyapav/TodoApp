@@ -3,15 +3,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight">
-
-    <ImageView
-        android:id="@+id/todo_cathegory_icon_bg"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_centerVertical="true"
-        android:src="@drawable/circle"
-        />
     <ImageView
         android:id="@+id/todo_cathegory_icon"
         android:layout_width="40dp"
@@ -20,6 +11,7 @@
         android:layout_centerVertical="true"
         android:padding="6dp"
         android:src="@drawable/ic_menu_camera"
+        android:background="@drawable/circle"
         />
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +23,7 @@
         android:orientation="horizontal"
         android:weightSum="10">
         <LinearLayout
-            android:layout_width="0"
+            android:layout_width="0dp"
             android:layout_weight="9"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -54,11 +46,11 @@
                 android:textSize="16sp" />
         </LinearLayout>
         <ImageView
-            android:id="@+id/todo_more_icon"
-            android:layout_width="0"
+            android:id="@+id/todo_secondary_action_icon"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_menu_send"/>
+            android:src="@drawable/ic_keyboard_arrow_right"/>
     </LinearLayout>
 
 

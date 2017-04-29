@@ -1,4 +1,4 @@
-package cz.matyapav.todoapp.todo.enums;
+package cz.matyapav.todoapp.todo.util.enums;
 
 import cz.matyapav.todoapp.R;
 

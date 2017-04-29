@@ -86,7 +86,7 @@
                         android:textSize="16sp" />
 
                     <ImageView
-                        android:id="@+id/todo_not_completed_icon"
+                        android:id="@+id/todo_total_icon"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_todo_total" />
@@ -126,7 +126,7 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/todo_fab"
+        android:id="@+id/create_todo_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_anchor="@id/todo_list"

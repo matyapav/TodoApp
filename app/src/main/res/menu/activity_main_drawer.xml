@@ -1,43 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_main"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_todo_today"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Todo today" />
+            android:icon="@drawable/ic_todo_today"
+            android:title="@string/todo_today" />
         <item
             android:id="@+id/nav_todo_all"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Todo all" />
+            android:icon="@drawable/ic_todo_all"
+            android:title="@string/todo_all" />
         <item
             android:id="@+id/nav_buzer_today"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Buzer today" />
+            android:icon="@drawable/ic_buzer_today"
+            android:title="@string/buzer_today" />
         <item
             android:id="@+id/nav_buzer_list"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Buzer list" />
+            android:icon="@drawable/ic_buzer_list"
+            android:title="@string/buzer_list" />
         <item
             android:id="@+id/nav_ideas"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Ideas" />
+            android:icon="@drawable/ic_ideas"
+            android:title="@string/ideas" />
     </group>
+    <group
+        android:id="@+id/group_settings"
+        android:checkableBehavior="single">
 
-    <group android:checkableBehavior="single">
-    <menu>
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Settings" />
-        <item
-            android:id="@+id/nav_help"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Help" />
-        <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/ic_menu_send"
-            android:title="About" />
-    </menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings_24dp"
+                android:title="@string/action_settings" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_help_24dp"
+                android:title="Help" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_info"
+                android:title="About" />
+
     </group>
 </menu>

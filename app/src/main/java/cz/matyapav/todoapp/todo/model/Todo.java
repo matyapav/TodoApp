@@ -3,7 +3,7 @@ package cz.matyapav.todoapp.todo.model;
 
 import java.util.Date;
 
-import cz.matyapav.todoapp.todo.enums.TodoPriority;
+import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
 
 /**
  * @author Pavel Matyáš (matyapav@fel.cvut.cz).

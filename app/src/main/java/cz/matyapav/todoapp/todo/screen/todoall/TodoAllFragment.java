@@ -26,8 +26,9 @@ public class TodoAllFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.todo_all));
         setHasOptionsMenu(false);
 
-        TodoDayController controller = new TodoDayController(getActivity(), new TodoDayViewHolder(view));
-
+        TodoAllController controller = new TodoAllController(getActivity(), new TodoAllViewHolder(view));
+        controller.setCurrentMonth();
+        controller.setCurrentMonthDays();
         return view;
     }
 

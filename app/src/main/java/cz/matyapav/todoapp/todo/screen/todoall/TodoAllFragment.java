@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Date;
+
 import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.screen.list.TodoDayController;
 import cz.matyapav.todoapp.todo.screen.list.TodoDayViewHolder;
@@ -22,6 +24,7 @@ public class TodoAllFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.todo_all_fragment, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.todo_all));
         setHasOptionsMenu(false);
@@ -29,6 +32,10 @@ public class TodoAllFragment extends Fragment {
         TodoAllController controller = new TodoAllController(getActivity(), new TodoAllViewHolder(view));
         controller.setCurrentMonth();
         controller.setCurrentMonthDays();
+        controller.setListenersOnDays();
+        controller.setListenerOnPrevMonth();
+        controller.setListenerOnNextMonth();
+        controller.setFabAction();
         return view;
     }
 

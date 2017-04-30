@@ -1,25 +1,12 @@
 package cz.matyapav.todoapp.todo.screen.create;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
-
-import java.util.Calendar;
-import java.util.Locale;
 
 import cz.matyapav.todoapp.R;
-import cz.matyapav.todoapp.todo.screen.list.TodoDayFragment;
-import cz.matyapav.todoapp.todo.util.adapters.CategoryAdapter;
-import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
-import cz.matyapav.todoapp.util.Utils;
 
 public class CreateTodoActivity extends AppCompatActivity {
 

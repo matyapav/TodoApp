@@ -7,6 +7,7 @@
     >
 
     <LinearLayout
+        android:id="@+id/todo_all_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -118,13 +119,13 @@
         <include layout="@layout/control_calendar"/>
     </LinearLayout>
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/todo_all_create_fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:layout_anchor="@id/todo_list"-->
-        <!--app:layout_anchorGravity="end|bottom"-->
-        <!--android:layout_margin="16dp"-->
-        <!--android:src="@drawable/ic_add_24dp" />-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/todo_all_create_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/todo_all_wrapper"
+        app:layout_anchorGravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>

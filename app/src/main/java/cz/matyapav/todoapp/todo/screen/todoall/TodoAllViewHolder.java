@@ -20,6 +20,7 @@ public class TodoAllViewHolder extends ViewHolder {
     ImageView nextMonth;
     ImageView prevMonth;
     GridView calendarView;
+    FloatingActionButton newTodoFab;
 
     public TodoAllViewHolder(View context) {
         super(context);
@@ -31,6 +32,7 @@ public class TodoAllViewHolder extends ViewHolder {
         nextMonth = (ImageView) getContext().findViewById(R.id.calendar_next_button);
         prevMonth = (ImageView) getContext().findViewById(R.id.calendar_prev_button);
         calendarView = (GridView) getContext().findViewById(R.id.calendar_grid);
+        newTodoFab = (FloatingActionButton) getContext().findViewById(R.id.todo_all_create_fab);
     }
 
 

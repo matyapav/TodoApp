@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.todo.screen.create.CreateTodoActivity;
+import cz.matyapav.todoapp.todo.screen.todoall.TodoAllFragment;
 import cz.matyapav.todoapp.todo.util.adapters.TodoDayAdapter;
 import cz.matyapav.todoapp.util.Utils;
 
@@ -22,7 +27,7 @@ public class TodoDayController {
 
     Activity context;
     TodoDayViewHolder vh;
-
+    ArrayAdapter<Todo> arrayAdapter;
 
     public TodoDayController(Activity context, TodoDayViewHolder vh) {
         this.context = context;
@@ -34,18 +39,26 @@ public class TodoDayController {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, CreateTodoActivity.class);
-                context.startActivityForResult(i, 1);
+                context.startActivity(i);
             }
         });
     }
 
-    void initTodoListAdapter(){
-        TodoDayAdapter adapter = new TodoDayAdapter(context, Utils.getDummyTodoList());
-        vh.listView.setAdapter(adapter);
+    void setSwipeAction(){
+        vh.listView.setOnTouchListener(new OnSwipeTouchListener(context, vh.listView, arrayAdapter));
     }
 
-    void setDay(){
+    void initTodoListAdapter(){
+        arrayAdapter = new TodoDayAdapter(context, Utils.getDummyTodoList());
+
+        vh.listView.setAdapter(arrayAdapter);
+    }
+
+    void setDay(Date currentDate){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        if(currentDate != null) {
+            calendar.setTime(currentDate);
+        }
         vh.dayOfMonth.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
         vh.dayOfWeek.setText(calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH));
         vh.month.setText(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH));

@@ -2,6 +2,8 @@ package cz.matyapav.todoapp.todo.util.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import java.util.Locale;
 
 import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.model.TodoDay;
+import cz.matyapav.todoapp.todo.screen.list.TodoDayFragment;
 import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
 import cz.matyapav.todoapp.util.Utils;
 
@@ -27,7 +30,7 @@ public class CalendarAdapter extends ArrayAdapter<TodoDay> {
 
     List<TodoDay> days;
 
-    public CalendarAdapter(Context context, List<TodoDay> days) {
+    public CalendarAdapter(FragmentActivity context, List<TodoDay> days) {
         super(context, 0, days);
         this.days = days;
     }
@@ -35,7 +38,8 @@ public class CalendarAdapter extends ArrayAdapter<TodoDay> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final TodoDay day = getItem(position);
-        if (convertView == null) {
+
+        if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.calendar_item, parent, false);
         }
 
@@ -84,7 +88,6 @@ public class CalendarAdapter extends ArrayAdapter<TodoDay> {
         int monthNow = calendar.get(Calendar.MONTH);
         calendar.setTime(day.getDate());
         dayView.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-
         if(calendar.get(Calendar.MONTH) == monthNow){
             dayView.setTextColor(Utils.getColor(getContext(), R.color.primary_text));
         }else{

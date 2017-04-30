@@ -65,7 +65,11 @@ public class TodoDayAdapter extends ArrayAdapter<Todo> {
 
     @Override
     public Todo getItem(int position) {
-        return todos.get(position);
+        if(position >= 0 && position < todos.size()) {
+            return todos.get(position);
+        }else{
+            return null;
+        }
     }
 
     //3

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,15 +32,19 @@ public class TodoDayFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Bundle arguments = getArguments();
+        Date currentDate = null;
+        if(arguments != null)currentDate = (Date) arguments.getSerializable("currentDate");
         View view = inflater.inflate(R.layout.todo_day_fragment, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.todo_today));
         setHasOptionsMenu(false);
 
         TodoDayController controller = new TodoDayController(getActivity(), new TodoDayViewHolder(view));
         controller.initTodoListAdapter();
-        controller.setDay();
+        controller.setDay(currentDate);
         controller.setTodoStatus();
         controller.setFabAction();
+        controller.setSwipeAction();
 
         return view;
     }
@@ -49,8 +54,5 @@ public class TodoDayFragment extends Fragment {
 
         super.onPrepareOptionsMenu(menu);
     }
-
-
-
 
 }

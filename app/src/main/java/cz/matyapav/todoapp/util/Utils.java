@@ -3,6 +3,7 @@ package cz.matyapav.todoapp.util;
 import android.content.Context;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.widget.Spinner;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,6 +77,18 @@ public class Utils {
         return dummyTodoList;
     }
 
+    public static int getValueSpinnerPosition(Spinner spinner, String value)
+    {
+        int index = 0;
+
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(value)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
 
 
 }

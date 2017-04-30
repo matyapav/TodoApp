@@ -1,6 +1,7 @@
 package cz.matyapav.todoapp.todo.model;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
 import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
@@ -9,7 +10,7 @@ import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
  * @author Pavel Matyáš (matyapav@fel.cvut.cz).
  * @since 1.0.0..
  */
-public class Todo {
+public class Todo implements Serializable {
 
     private String title;
     private Date dateAndTimeStart;

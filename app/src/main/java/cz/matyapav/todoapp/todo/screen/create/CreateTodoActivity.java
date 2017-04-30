@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import cz.matyapav.todoapp.R;
+import cz.matyapav.todoapp.todo.model.Todo;
+import cz.matyapav.todoapp.util.Constants;
 
 public class CreateTodoActivity extends AppCompatActivity {
 
@@ -14,6 +16,7 @@ public class CreateTodoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_create_todo);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -21,6 +24,7 @@ public class CreateTodoActivity extends AppCompatActivity {
         //get views
         CreateTodoController controller =
                 new CreateTodoController(this,new CreateTodoViewHolder(findViewById(R.id.activity_create_todo)));
+
 
         //set actions on date and time pickers
         controller.setListenersToDateAndTimePickers();
@@ -36,6 +40,10 @@ public class CreateTodoActivity extends AppCompatActivity {
 
         controller.setFabAction();
 
+        Todo prefilledTodo = (Todo) getIntent().getSerializableExtra(Constants.PREFILLED_TODO);
+        if(prefilledTodo != null){
+            controller.fillTodoIntoView(prefilledTodo);
+        }
     }
 
     @Override

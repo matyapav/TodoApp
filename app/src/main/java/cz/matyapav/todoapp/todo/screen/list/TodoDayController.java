@@ -3,9 +3,13 @@ package cz.matyapav.todoapp.todo.screen.list;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,7 +31,6 @@ public class TodoDayController {
 
     Activity context;
     TodoDayViewHolder vh;
-    ArrayAdapter<Todo> arrayAdapter;
 
     public TodoDayController(Activity context, TodoDayViewHolder vh) {
         this.context = context;
@@ -44,15 +47,12 @@ public class TodoDayController {
         });
     }
 
-    void setSwipeAction(){
-        vh.listView.setOnTouchListener(new OnSwipeTouchListener(context, vh.listView, arrayAdapter));
-    }
-
     void initTodoListAdapter(){
-        arrayAdapter = new TodoDayAdapter(context, Utils.getDummyTodoList());
-
-        vh.listView.setAdapter(arrayAdapter);
+        vh.listView.setHasFixedSize(true);
+        vh.listView.setLayoutManager(new LinearLayoutManager(context));
+        vh.listView.setAdapter(new TodoDayAdapter(context, Utils.getDummyTodoList()));
     }
+
 
     void setDay(Date currentDate){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
@@ -78,5 +78,14 @@ public class TodoDayController {
             }
         }
         return result;
+    }
+
+    public void setListenerToListView() {
+//        vh.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(context, "clicked" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }

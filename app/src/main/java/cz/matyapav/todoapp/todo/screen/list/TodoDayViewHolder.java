@@ -1,7 +1,9 @@
 package cz.matyapav.todoapp.todo.screen.list;
 
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,7 +16,7 @@ import cz.matyapav.todoapp.ViewHolder;
  */
 public class TodoDayViewHolder extends ViewHolder {
 
-    ListView listView;
+    RecyclerView listView;
     TextView dayOfMonth;
     TextView dayOfWeek;
     TextView month;
@@ -28,7 +30,7 @@ public class TodoDayViewHolder extends ViewHolder {
 
     @Override
     public void findViews() {
-        listView = (ListView) getContext().findViewById(R.id.todo_list);
+        listView = (RecyclerView) getContext().findViewById(R.id.todo_list);
         dayOfMonth = (TextView) getContext().findViewById(R.id.todo_day_in_month);
         dayOfWeek = (TextView) getContext().findViewById(R.id.todo_day_in_week);
         month = (TextView) getContext().findViewById(R.id.todo_month);

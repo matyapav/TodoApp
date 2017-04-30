@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.ViewHolder;
@@ -27,6 +28,10 @@ public class CreateTodoViewHolder extends ViewHolder {
     ImageView highPrioIcon;
     Spinner cathegorySpinner;
     FloatingActionButton finishFab;
+    EditText todoTitle;
+    Switch notification;
+    EditText description;
+
 
     public CreateTodoViewHolder(View context) {
         super(context);
@@ -45,6 +50,9 @@ public class CreateTodoViewHolder extends ViewHolder {
         highPrioIcon = (ImageView) getContext().findViewById(R.id.create_todo_high_priority_icon);
         cathegorySpinner = (Spinner) getContext().findViewById(R.id.create_todo_category);
         finishFab = (FloatingActionButton) getContext().findViewById(R.id.finish_create_todo_fab);
+        todoTitle = (EditText) getContext().findViewById(R.id.create_todo_title);
+        notification = (Switch) getContext().findViewById(R.id.create_todo_notification);
+        description = (EditText) getContext().findViewById(R.id.create_todo_description);
     }
 
 }

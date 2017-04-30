@@ -1,10 +1,12 @@
 package cz.matyapav.todoapp.todo.model;
 
+import java.io.Serializable;
+
 /**
  * @author Pavel Matyáš (matyapav@fel.cvut.cz).
  * @since 1.0.0..
  */
-public class Cathegory {
+public class Cathegory implements Serializable{
 
     private String cathegoryName;
     private int imgResourceId;
@@ -42,5 +44,11 @@ public class Cathegory {
 
     public void setImgResourceId(int imgResourceId) {
         this.imgResourceId = imgResourceId;
+    }
+
+    @Override
+    public String toString() {
+        //dulezite taha se podle toho pozice kategorie ve spinneru
+        return cathegoryName;
     }
 }

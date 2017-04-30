@@ -31,6 +31,7 @@ import cz.matyapav.todoapp.todo.screen.list.TodoDayFragment;
 import cz.matyapav.todoapp.todo.screen.list.TodoDayViewHolder;
 import cz.matyapav.todoapp.todo.util.adapters.CalendarAdapter;
 import cz.matyapav.todoapp.todo.util.adapters.TodoDayAdapter;
+import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.Utils;
 
 /**
@@ -104,9 +105,9 @@ public class TodoAllController {
                     Bundle bundle = new Bundle();
                     TodoDay day = (TodoDay) parent.getAdapter().getItem(position);
                     Date date = day.getDate();
-                    bundle.putSerializable("currentDate", date);
+                    bundle.putSerializable(Constants.CURRENT_DATE, date);
                     fragment.setArguments(bundle);
-                    fragmentManager.beginTransaction().replace(R.id.mainLayout, fragment, "currentDate").commit();
+                    fragmentManager.beginTransaction().replace(R.id.mainLayout, fragment, Constants.CURRENT_DATE).commit();
                     ((NavigationView) context.findViewById(R.id.nav_view)).setCheckedItem(R.id.nav_todo_today);
                 } catch (InstantiationException | IllegalAccessException e) {
                     e.printStackTrace();

@@ -1,12 +1,14 @@
 package cz.matyapav.todoapp.todo.util.enums;
 
+import java.io.Serializable;
+
 import cz.matyapav.todoapp.R;
 
 /**
  * @author Pavel Matyáš (matyapav@fel.cvut.cz).
  * @since 1.0.0..
  */
-public enum TodoPriority {
+public enum TodoPriority implements Serializable{
 
     LOW("Low", R.color.colorGreen),
     MEDIUM("Medium", R.color.colorOrange),

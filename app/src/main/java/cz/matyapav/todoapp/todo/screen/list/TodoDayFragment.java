@@ -20,6 +20,7 @@ import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.util.adapters.TodoDayAdapter;
 import cz.matyapav.todoapp.todo.screen.create.CreateTodoActivity;
 import cz.matyapav.todoapp.todo.model.Todo;
+import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.Utils;
 
 /**
@@ -34,7 +35,7 @@ public class TodoDayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle arguments = getArguments();
         Date currentDate = null;
-        if(arguments != null)currentDate = (Date) arguments.getSerializable("currentDate");
+        if(arguments != null)currentDate = (Date) arguments.getSerializable(Constants.CURRENT_DATE);
         View view = inflater.inflate(R.layout.todo_day_fragment, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.todo_today));
         setHasOptionsMenu(false);
@@ -44,8 +45,7 @@ public class TodoDayFragment extends Fragment {
         controller.setDay(currentDate);
         controller.setTodoStatus();
         controller.setFabAction();
-        controller.setSwipeAction();
-
+        controller.setListenerToListView();
         return view;
     }
 

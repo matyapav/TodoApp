@@ -43,6 +43,7 @@ public class CreateTodoActivity extends AppCompatActivity {
         Todo prefilledTodo = (Todo) getIntent().getSerializableExtra(Constants.PREFILLED_TODO);
         if(prefilledTodo != null){
             controller.fillTodoIntoView(prefilledTodo);
+            setTitle("Edit tudu");
         }
     }
 

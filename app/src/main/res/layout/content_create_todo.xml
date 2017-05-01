@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="62dp"
             android:layout_margin="5dp"
-            android:hint="Tudu name (e.g. Kill wife)"
+            android:hint="e.g. Study for exam"
             android:textAlignment="center"
             android:textSize="28sp" />
         <!-- TUDU TITLE END -->

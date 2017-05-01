@@ -1,6 +1,5 @@
 package cz.matyapav.todoapp.todo.screen.todoall;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -8,14 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,13 +18,10 @@ import java.util.List;
 import java.util.Locale;
 
 import cz.matyapav.todoapp.R;
-import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.todo.model.TodoDay;
 import cz.matyapav.todoapp.todo.screen.create.CreateTodoActivity;
 import cz.matyapav.todoapp.todo.screen.list.TodoDayFragment;
-import cz.matyapav.todoapp.todo.screen.list.TodoDayViewHolder;
 import cz.matyapav.todoapp.todo.util.adapters.CalendarAdapter;
-import cz.matyapav.todoapp.todo.util.adapters.TodoDayAdapter;
 import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.Utils;
 
@@ -47,7 +38,7 @@ public class TodoAllController {
     private static final int DAYS_COUNT = 42;
 
 
-    public TodoAllController(FragmentActivity context, TodoAllViewHolder vh) {
+    public TodoAllController(FragmentActivity context, final TodoAllViewHolder vh) {
         this.context = context;
         this.vh = vh;
     }
@@ -56,8 +47,8 @@ public class TodoAllController {
         vh.newTodoFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Intent i = new Intent(context, CreateTodoActivity.class);
-            context.startActivity(i);
+                Intent i = new Intent(context, CreateTodoActivity.class);
+                context.startActivity(i);
             }
         });
     }
@@ -66,7 +57,7 @@ public class TodoAllController {
     void setCurrentMonth(){
         String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
         String year = String.valueOf(calendar.get(Calendar.YEAR));
-        vh.currentMonth.setText(month+" "+year);
+        vh.currentMonth.setText(month + " " + year);
     }
 
     void setCurrentMonthDays(){
@@ -74,7 +65,7 @@ public class TodoAllController {
         Calendar calendar = (Calendar) this.calendar.clone();
         int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
-        int numberOfDays = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
         List<TodoDay> days = new ArrayList<>();
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         int monthBeginningCell = calendar.get(Calendar.DAY_OF_WEEK)-2;
@@ -91,7 +82,7 @@ public class TodoAllController {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
-        vh.calendarView.setAdapter(new CalendarAdapter(context, days));
+        vh.calendarView.setAdapter(new CalendarAdapter(context, days, this.calendar.get(Calendar.MONTH)));
         // update grid
     }
 
@@ -136,6 +127,12 @@ public class TodoAllController {
                 setCurrentMonthDays();
             }
         });
+    }
+
+    void animateCalendar(){
+
+
+
     }
 
     //TODO set monthly total todo count and completed count

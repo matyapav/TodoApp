@@ -3,24 +3,20 @@ package cz.matyapav.todoapp.todo.util.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.Adapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
-import com.daimajia.swipe.adapters.ArraySwipeAdapter;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
-import com.daimajia.swipe.implments.SwipeItemAdapterMangerImpl;
-import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
-import com.daimajia.swipe.util.Attributes;
 
 import java.util.Calendar;
 import java.util.List;
@@ -29,7 +25,6 @@ import java.util.Locale;
 import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.todo.screen.create.CreateTodoActivity;
-import cz.matyapav.todoapp.todo.screen.list.TodoDayViewHolder;
 import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.Utils;
 
@@ -42,10 +37,25 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
 
     private List<Todo> todos;
     private Activity context;
+    private AdapterObserver observer;
+    private boolean showCompleted;
+    SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (key.equals(Constants.PREFS_SHOW_COMPLETED)) {
+                showCompleted = sharedPreferences.getBoolean(key, true);
+                notifyDataSetChanged();
+            }
+        }
+    };
 
-    public TodoDayAdapter(Activity context, List<Todo> todos) {
+    public TodoDayAdapter(Activity context, final List<Todo> todos, AdapterObserver observer) {
         this.context = context;
         this.todos = todos;
+        this.observer = observer;
+        this.showCompleted = true; //default on first run is true;
+        SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
+        preferences.registerOnSharedPreferenceChangeListener(listener);
     }
 
     //3
@@ -93,10 +103,12 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
         final int color = todo.getPriority().getColorId();
         GradientDrawable iconBg = (GradientDrawable) viewHolder.todoIcon.getBackground().mutate();
         iconBg.setColor(Utils.getColor(context, color));
+
         if(todo.isCompleted()){
             viewHolder.todoIcon.setImageResource(R.drawable.ic_check_circle);
             iconBg.setColor(Utils.getColor(context, R.color.secondary_text));
         }
+
         //add listeners to item
         viewHolder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,13 +132,16 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
                             public void onClick(View view) {
                                 todo.setCompleted(!todo.isCompleted());
                                 notifyItemChanged(pos, todo);
+                                observer.onAdapterDataChanged();
                             }
                         });
                 undoCompletedSnackbar.show();
                 viewHolder.swipeLayout.close();
                 notifyItemChanged(pos, todo);
+                observer.onAdapterDataChanged();
             }
         });
+
         viewHolder.deleteLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,14 +153,28 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
                             public void onClick(View view) {
                                 todos.add(pos, todo);
                                 notifyItemInserted(pos);
+                                observer.onAdapterDataChanged();
                             }
                         });
 
                 undoDeletionSnackbar.show();
                 viewHolder.swipeLayout.close();
                 notifyItemRemoved(pos);
+                observer.onAdapterDataChanged();
             }
         });
+        RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) viewHolder.itemView.getLayoutParams();
+        if(todo.isCompleted() && !showCompleted){
+            param.height = 0;
+            param.width = 0;
+            viewHolder.itemView.setVisibility(View.GONE);
+        }else{
+            param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            viewHolder.itemView.setVisibility(View.VISIBLE);
+        }
+        viewHolder.itemView.setLayoutParams(param);
+
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
@@ -169,4 +198,6 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
         }
 
     }
+
+
 }

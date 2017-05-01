@@ -127,6 +127,7 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
+        app:layout_behavior="cz.matyapav.todoapp.util.ScrollAwareFBBehavior"
         android:id="@+id/create_todo_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

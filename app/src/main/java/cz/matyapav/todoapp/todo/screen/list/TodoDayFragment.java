@@ -1,6 +1,8 @@
 package cz.matyapav.todoapp.todo.screen.list;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,6 +33,7 @@ import cz.matyapav.todoapp.util.Utils;
  */
 public class TodoDayFragment extends Fragment {
 
+    TodoDayController controller;
 
     @Nullable
     @Override
@@ -38,21 +43,30 @@ public class TodoDayFragment extends Fragment {
         if(arguments != null)currentDate = (Date) arguments.getSerializable(Constants.CURRENT_DATE);
         View view = inflater.inflate(R.layout.todo_day_fragment, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.todo_today));
-        setHasOptionsMenu(false);
+        setHasOptionsMenu(true);
 
-        TodoDayController controller = new TodoDayController(getActivity(), new TodoDayViewHolder(view));
+        controller = new TodoDayController(getActivity(), new TodoDayViewHolder(view));
         controller.initTodoListAdapter();
         controller.setDay(currentDate);
         controller.setTodoStatus();
         controller.setFabAction();
-        controller.setListenerToListView();
         return view;
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-
-        super.onPrepareOptionsMenu(menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.todo_day, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_show_completed){
+            item.setChecked(!item.isChecked());
+            controller.toggleCompletedTodoVisibility();
+            return false;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

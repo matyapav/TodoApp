@@ -84,13 +84,13 @@
                 android:paddingRight="30dp">
 
                 <!-- prev button -->
-                <ImageView
+                <Button
                     android:id="@+id/calendar_prev_button"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentStart="true"
-                    android:src="@drawable/ic_chevron_left_24dp"/>
+                    android:background="@drawable/ic_chevron_left_24dp"/>
 
                 <!-- date title -->
                 <TextView
@@ -106,13 +106,13 @@
                     android:text="current date"/>
 
                 <!-- next button -->
-                <ImageView
+                <Button
                     android:id="@+id/calendar_next_button"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_chevron_right_24dp"/>
+                    android:background="@drawable/ic_chevron_right_24dp"/>
             </RelativeLayout>
 
         </RelativeLayout>

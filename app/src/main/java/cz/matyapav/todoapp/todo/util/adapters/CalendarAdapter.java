@@ -1,6 +1,7 @@
 package cz.matyapav.todoapp.todo.util.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -29,10 +30,12 @@ import cz.matyapav.todoapp.util.Utils;
 public class CalendarAdapter extends ArrayAdapter<TodoDay> {
 
     List<TodoDay> days;
+    int month;
 
-    public CalendarAdapter(FragmentActivity context, List<TodoDay> days) {
+    public CalendarAdapter(FragmentActivity context, List<TodoDay> days, int month) {
         super(context, 0, days);
         this.days = days;
+        this.month = month;
     }
 
     @Override
@@ -85,13 +88,21 @@ public class CalendarAdapter extends ArrayAdapter<TodoDay> {
         }
 
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-        int monthNow = calendar.get(Calendar.MONTH);
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentYear = calendar.get(Calendar.YEAR);
         calendar.setTime(day.getDate());
         dayView.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-        if(calendar.get(Calendar.MONTH) == monthNow){
+        if(calendar.get(Calendar.MONTH) == month){
             dayView.setTextColor(Utils.getColor(getContext(), R.color.primary_text));
         }else{
             dayView.setTextColor(Utils.getColor(getContext(), R.color.secondary_text));
+        }
+        if(calendar.get(Calendar.DAY_OF_MONTH) == currentDay
+                && calendar.get(Calendar.MONTH) == currentMonth
+                && calendar.get(Calendar.YEAR) == currentYear){
+            dayView.setTextColor(Utils.getColor(getContext(), R.color.colorAccent));
+            dayView.setTypeface(null, Typeface.BOLD);
         }
 
         return convertView;

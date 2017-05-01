@@ -3,6 +3,7 @@ package cz.matyapav.todoapp.todo.screen.list;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -20,14 +21,17 @@ import java.util.Locale;
 import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.todo.screen.create.CreateTodoActivity;
 import cz.matyapav.todoapp.todo.screen.todoall.TodoAllFragment;
+import cz.matyapav.todoapp.todo.util.adapters.AdapterObserver;
 import cz.matyapav.todoapp.todo.util.adapters.TodoDayAdapter;
+import cz.matyapav.todoapp.util.Constants;
+import cz.matyapav.todoapp.util.SimpleDividerItemDecoration;
 import cz.matyapav.todoapp.util.Utils;
 
 /**
  * @author Pavel Matyáš (matyapav@fel.cvut.cz).
  * @since 1.0.0..
  */
-public class TodoDayController {
+public class TodoDayController implements AdapterObserver {
 
     Activity context;
     TodoDayViewHolder vh;
@@ -50,7 +54,8 @@ public class TodoDayController {
     void initTodoListAdapter(){
         vh.listView.setHasFixedSize(true);
         vh.listView.setLayoutManager(new LinearLayoutManager(context));
-        vh.listView.setAdapter(new TodoDayAdapter(context, Utils.getDummyTodoList()));
+        vh.listView.setAdapter(new TodoDayAdapter(context, Utils.getDummyTodoList(), this));
+        vh.listView.addItemDecoration(new SimpleDividerItemDecoration(context));
     }
 
 
@@ -80,12 +85,16 @@ public class TodoDayController {
         return result;
     }
 
-    public void setListenerToListView() {
-//        vh.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(context, "clicked" + position, Toast.LENGTH_SHORT).show();
-//            }
-//        });
+    @Override
+    public void onAdapterDataChanged() {
+        setTodoStatus();
+    }
+
+    public void toggleCompletedTodoVisibility(){
+        SharedPreferences sharedPref = context.getSharedPreferences(Constants.PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        boolean showCompleted = sharedPref.getBoolean(Constants.PREFS_SHOW_COMPLETED, true);
+        editor.putBoolean(Constants.PREFS_SHOW_COMPLETED, !showCompleted);
+        editor.apply();
     }
 }

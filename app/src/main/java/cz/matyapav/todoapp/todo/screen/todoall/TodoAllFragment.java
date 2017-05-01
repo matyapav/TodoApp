@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -39,11 +40,7 @@ public class TodoAllFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
 
-        super.onPrepareOptionsMenu(menu);
-    }
 
 
 

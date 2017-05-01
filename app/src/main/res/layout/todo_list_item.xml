@@ -3,8 +3,7 @@
     android:id="@+id/list_item_swipe_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:background="@drawable/list_selector">
+    android:layout_height="?android:attr/listPreferredItemHeight">
 
     <!-- Bottom View Start-->
     <LinearLayout
@@ -80,6 +79,7 @@
                     android:layout_marginBottom="6dp"
                     android:layout_marginTop="6dp"
                     android:singleLine="true"
+                    android:textColor="@color/primary_text"
                     android:text="12:00 - 13:00"
                     android:textSize="18sp" />
 
@@ -88,7 +88,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
+                    android:textColor="@color/secondary_text"
                     android:text="Example TODO"
+                    android:paddingBottom="7dp"
                     android:textSize="16sp" />
 
             </LinearLayout>

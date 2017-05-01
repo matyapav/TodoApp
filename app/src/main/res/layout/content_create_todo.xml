@@ -71,9 +71,9 @@
                             android:layout_height="match_parent"
                             android:layout_marginEnd="8dp"
                             android:layout_weight="1"
-                            android:background="@drawable/rect_all_corners_rounded"
                             android:gravity="center_horizontal|center_vertical"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:elevation="2dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -97,9 +97,9 @@
                             android:layout_height="match_parent"
                             android:layout_marginEnd="8dp"
                             android:layout_weight="1"
-                            android:background="@drawable/rect_all_corners_rounded"
                             android:gravity="center_horizontal|center_vertical"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:elevation="2dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -122,9 +122,9 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@drawable/rect_all_corners_rounded"
                             android:gravity="center_horizontal|center_vertical"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:elevation="2dp">
 
                             <TextView
                                 android:layout_width="wrap_content"

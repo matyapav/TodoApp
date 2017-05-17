@@ -54,7 +54,6 @@ public class CalendarAdapter extends ArrayAdapter<TodoDay> {
         ImageView medIcon = (ImageView) convertView.findViewById(R.id.calendar_day_view_med_priority_tasks_icon);
         ImageView highIcon = (ImageView) convertView.findViewById(R.id.calendar_day_view_high_priority_tasks_icon);
 
-
         GradientDrawable lowIconBg = (GradientDrawable) lowIcon.getBackground().mutate();
         lowIconBg.setColor(Utils.getColor(getContext(), TodoPriority.LOW.getColorId()));
 
@@ -87,7 +86,7 @@ public class CalendarAdapter extends ArrayAdapter<TodoDay> {
             highTasks.setText(String.valueOf(highTasksCount));
         }
 
-        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        Calendar calendar = Calendar.getInstance();
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         int currentMonth = calendar.get(Calendar.MONTH);
         int currentYear = calendar.get(Calendar.YEAR);

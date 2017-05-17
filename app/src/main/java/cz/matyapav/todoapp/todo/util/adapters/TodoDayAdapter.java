@@ -92,7 +92,7 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
         viewHolder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, viewHolder.deleteLayout);
         viewHolder.swipeLayout.setClickToClose(true);
 
-        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(todo.getDateAndTimeStart());
         String start = String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
         calendar.setTime(todo.getDateAndTimeEnd());
@@ -145,21 +145,22 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
         viewHolder.deleteLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                todos.remove(todo);
+                final int position = todos.indexOf(todo);
                 Snackbar undoDeletionSnackbar = Snackbar
                         .make(viewHolder.itemView, todo.getTitle()+" deleted", Snackbar.LENGTH_LONG)
                         .setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                todos.add(pos, todo);
-                                notifyItemInserted(pos);
+                                todos.add(position, todo);
+                                notifyItemInserted(position);
                                 observer.onAdapterDataChanged();
                             }
                         });
 
                 undoDeletionSnackbar.show();
                 viewHolder.swipeLayout.close();
-                notifyItemRemoved(pos);
+                notifyItemRemoved(position);
+                todos.remove(todo);
                 observer.onAdapterDataChanged();
             }
         });
@@ -175,6 +176,11 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
         }
         viewHolder.itemView.setLayoutParams(param);
 
+    }
+
+    public void changeDataSet(List<Todo> data){
+        this.todos = data;
+        notifyDataSetChanged();
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder {

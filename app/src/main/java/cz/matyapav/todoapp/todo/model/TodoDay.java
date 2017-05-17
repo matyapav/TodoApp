@@ -2,6 +2,7 @@ package cz.matyapav.todoapp.todo.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
@@ -16,6 +17,7 @@ public class TodoDay {
     private List<Todo> todos;
 
     public TodoDay() {
+        this.todos = new ArrayList<>();
     }
 
     public TodoDay(Date date, List<Todo> todos) {
@@ -54,10 +56,10 @@ public class TodoDay {
     }
 
     public int getTodosCount(TodoPriority priority){
+        int sum = 0;
         if(todos == null){
             return 0;
         }
-        int sum = 0;
         for (Todo todo : todos) {
             if(todo.getPriority().equals(priority)){
                 sum++;
@@ -66,4 +68,17 @@ public class TodoDay {
         return sum;
     }
 
+
+    public int getNumberOfCompletedTodos(){
+        int result = 0;
+        if(todos == null){
+            return 0;
+        }
+        for (Todo todo : todos) {
+            if(todo.isCompleted()){
+                result++;
+            }
+        }
+        return result;
+    }
 }

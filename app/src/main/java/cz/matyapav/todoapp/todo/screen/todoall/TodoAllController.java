@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,6 +24,7 @@ import cz.matyapav.todoapp.todo.screen.create.CreateTodoActivity;
 import cz.matyapav.todoapp.todo.screen.list.TodoDayFragment;
 import cz.matyapav.todoapp.todo.util.adapters.CalendarAdapter;
 import cz.matyapav.todoapp.util.Constants;
+import cz.matyapav.todoapp.util.Storage;
 import cz.matyapav.todoapp.util.Utils;
 
 /**
@@ -63,26 +65,27 @@ public class TodoAllController {
     void setCurrentMonthDays(){
 //        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         Calendar calendar = (Calendar) this.calendar.clone();
-        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
-
-        List<TodoDay> days = new ArrayList<>();
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         int monthBeginningCell = calendar.get(Calendar.DAY_OF_WEEK)-2;
         calendar.add(Calendar.DAY_OF_MONTH, -monthBeginningCell);
 
 
-        //TODO odstranit dummy pridavani todolistu na aktualini den
+        HashMap<String, TodoDay> days = Storage.getTodoDaysList();
+        List<TodoDay> daysToCalendar = new ArrayList<>();
+
+        //TODO vylepsit kdyz bude cas
         for (int i = 0; i < DAYS_COUNT; i++) {
-            if(calendar.get(Calendar.DAY_OF_MONTH) == currentDay && calendar.get(Calendar.MONTH) == currentMonth){
-                days.add(new TodoDay(calendar.getTime(), Utils.getDummyTodoList()));
-            }else{
-                days.add(new TodoDay(calendar.getTime(), null));
+            for(String day : days.keySet()){
+                if(Utils.dateFormatter.format(calendar.getTime()).equals(day)){
+                    daysToCalendar.add(days.get(day));
+                }else{
+                    daysToCalendar.add(new TodoDay(calendar.getTime(), null));
+                }
             }
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
-        vh.calendarView.setAdapter(new CalendarAdapter(context, days, this.calendar.get(Calendar.MONTH)));
+        vh.calendarView.setAdapter(new CalendarAdapter(context, daysToCalendar, this.calendar.get(Calendar.MONTH)));
         // update grid
     }
 

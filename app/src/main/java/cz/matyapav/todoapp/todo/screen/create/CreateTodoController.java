@@ -16,6 +16,7 @@ import cz.matyapav.todoapp.todo.model.Cathegory;
 import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.todo.util.adapters.CategoryAdapter;
 import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
+import cz.matyapav.todoapp.util.Storage;
 import cz.matyapav.todoapp.util.Utils;
 
 /**
@@ -33,7 +34,7 @@ public class CreateTodoController {
     }
 
     void initCategorySpinner() {
-        vh.cathegorySpinner.setAdapter(new CategoryAdapter(context, Utils.getDummyCategories()));
+        vh.cathegorySpinner.setAdapter(new CategoryAdapter(context, Storage.getDummyCategories()));
     }
 
     void setFabAction() {
@@ -101,7 +102,7 @@ public class CreateTodoController {
     }
 
     private void showTimePickerDialog(final boolean isStartTime) {
-        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        Calendar calendar = Calendar.getInstance();
         TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -116,7 +117,7 @@ public class CreateTodoController {
     }
 
     private void showDatePickerDialog() {
-        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -131,7 +132,7 @@ public class CreateTodoController {
     public void fillTodoIntoView(Todo todo) {
         vh.todoTitle.setText(todo.getTitle());
         selectPriority(todo.getPriority());
-        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(todo.getDateAndTimeStart());
         vh.createTodoDate.setText(Utils.dateFormatter.format(calendar.getTime()));
         vh.createTodoStartTime.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));

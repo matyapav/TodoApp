@@ -4,21 +4,17 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import cz.matyapav.todoapp.todo.model.Cathegory;
 import cz.matyapav.todoapp.todo.model.Todo;
-import cz.matyapav.todoapp.todo.util.adapters.CategoryAdapter;
+import cz.matyapav.todoapp.todo.adapters.CategoryAdapter;
 import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
 import cz.matyapav.todoapp.todo.util.validators.TodoValidator;
-import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.Storage;
 import cz.matyapav.todoapp.util.Utils;
 
@@ -115,15 +111,14 @@ public class CreateTodoController {
     }
 
     void saveTodo(Todo todo){
+        boolean successfullySaved = false;
         if(editedTodo == null) {
-            try {
-                Storage.addNewTodo(todo);
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
-
+            successfullySaved = Storage.addNewTodo(todo, context);
         }else{
-            Storage.editTodo(editedTodo.getId(), todo);
+            successfullySaved = Storage.editTodo(editedTodo.getId(), todo);
+        }
+        if(successfullySaved) {
+            Storage.updateTodosInSharedPreferences(context);
         }
         context.setResult(Activity.RESULT_OK);
         context.finish();

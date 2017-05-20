@@ -1,4 +1,4 @@
-package cz.matyapav.todoapp.todo.util.adapters;
+package cz.matyapav.todoapp.todo.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

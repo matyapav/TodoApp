@@ -16,4 +16,6 @@ public class Constants {
     public static final java.lang.CharSequence START_AFTER_END = "Start time cannot be same or after end time.";
     public static final String TODO_ID = "unique_todo_id";
     public static final int TODO_CREATE_EDIT_REQUEST_CODE = 25;
+    public static final String TODOS = "todos";
+
 }

@@ -22,8 +22,7 @@ import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.model.TodoDay;
 import cz.matyapav.todoapp.todo.screen.create.CreateTodoActivity;
 import cz.matyapav.todoapp.todo.screen.list.TodoDayFragment;
-import cz.matyapav.todoapp.todo.util.adapters.CalendarAdapter;
-import cz.matyapav.todoapp.todo.util.adapters.TodoDayAdapter;
+import cz.matyapav.todoapp.todo.adapters.CalendarAdapter;
 import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.Storage;
 import cz.matyapav.todoapp.util.Utils;
@@ -72,7 +71,7 @@ public class TodoAllController {
         int monthBeginningCell = calendar.get(Calendar.DAY_OF_WEEK)-2;
         calendar.add(Calendar.DAY_OF_MONTH, -monthBeginningCell);
 
-        HashMap<String, TodoDay> days = Storage.getTodoDaysList();
+        HashMap<String, TodoDay> days = Storage.getTodoDaysList(context);
         List<TodoDay> daysToCalendar = new ArrayList<>();
         //TODO vylepsit kdyz bude cas
         for (int i = 0; i < DAYS_COUNT; i++) {

@@ -18,8 +18,8 @@ import java.util.Locale;
 import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.todo.model.TodoDay;
 import cz.matyapav.todoapp.todo.screen.create.CreateTodoActivity;
-import cz.matyapav.todoapp.todo.util.adapters.AdapterObserver;
-import cz.matyapav.todoapp.todo.util.adapters.TodoDayAdapter;
+import cz.matyapav.todoapp.todo.adapters.AdapterObserver;
+import cz.matyapav.todoapp.todo.adapters.TodoDayAdapter;
 import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.SimpleDividerItemDecoration;
 import cz.matyapav.todoapp.util.Storage;
@@ -39,7 +39,7 @@ public class TodoDayController implements AdapterObserver {
     public TodoDayController(Activity context, TodoDayViewHolder vh, Fragment fragment) {
         this.context = context;
         this.vh = vh;
-        this.currentDay = Storage.getCurrentTodoDay();
+        this.currentDay = Storage.getCurrentTodoDay(context);
         this.fragment = fragment;
     }
 
@@ -91,7 +91,7 @@ public class TodoDayController implements AdapterObserver {
         vh.dayOfMonth.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
         vh.dayOfWeek.setText(calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH));
         vh.month.setText(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH));
-        currentDay = Storage.getTodoDayByDate(calendar.getTime());
+        currentDay = Storage.getTodoDayByDate(calendar.getTime(), context);
         TodoDayAdapter adapter = (TodoDayAdapter) vh.listView.getAdapter();
         if(currentDay != null) {
             adapter.changeDataSet(currentDay.getTodos());
@@ -117,6 +117,7 @@ public class TodoDayController implements AdapterObserver {
     @Override
     public void onAdapterDataChanged() {
         setTodoStatus();
+        Storage.updateTodosInSharedPreferences(context);
     }
 
     public void toggleCompletedTodoVisibility(){

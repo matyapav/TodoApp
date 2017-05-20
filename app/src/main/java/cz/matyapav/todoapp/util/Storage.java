@@ -1,8 +1,13 @@
 package cz.matyapav.todoapp.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.model.Cathegory;
@@ -37,63 +43,26 @@ public class Storage {
         return cathegories;
     }
 
-    public static HashMap<String, TodoDay> getTodoDaysList() {
+    public static HashMap<String, TodoDay> getTodoDaysList(Context context) {
         if(todoDaysList == null){
-            todoDaysList = new HashMap<>();
-//            TodoDay today = new TodoDay();
-//            Calendar calendar = Calendar.getInstance();
-//            today.setDate(calendar.getTime());
-//            //create todos in dummy tododay
-//            for (int i = 0; i < 20; i++) {
-//                Todo todo = new Todo();
-//                todo.setTitle("Todo " + i);
-//                todo.setDescription("Description " + i);
-//                todo.setNotification(false);
-//                if(i<=3) {
-//                    todo.setPriority(TodoPriority.LOW);
-//                    todo.setCathegory(getDummyCategories().get(0));
-//                    todo.setCompleted(true);
-//                }else if(i >=3 && i<=6){
-//                    todo.setPriority(TodoPriority.MEDIUM);
-//                    todo.setCathegory(getDummyCategories().get(1));
-//                    todo.setCompleted(false);
-//                }else{
-//                    todo.setPriority(TodoPriority.HIGH);
-//                    todo.setCathegory(getDummyCategories().get(2));
-//                    todo.setCompleted(false);
-//                }
-//                calendar.set(Calendar.HOUR_OF_DAY, i + 1);
-//                calendar.set(Calendar.MINUTE, i);
-//                todo.setDateAndTimeStart(calendar.getTime());
-//                calendar.set(Calendar.HOUR_OF_DAY, i + 2);
-//                calendar.set(Calendar.MINUTE, 2*i);
-//                todo.setDateAndTimeEnd(calendar.getTime());
-//                today.addTodo(todo);
-//            }
-//
-//            todoDaysList.put(Utils.dateFormatter.format(calendar.getTime()), today);
+            //load from shared preferences
+            SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_FILE_KEY, 0); //private mode;
+            String serializedTodos = preferences.getString(Constants.TODOS, null); //if not found then null
+            if(serializedTodos == null){
+                //no todos yet, create new map
+                todoDaysList = new HashMap<>();
+            }else{
+                Gson gson = new Gson();
+                Type type = new TypeToken<HashMap<String, TodoDay>>(){}.getType();
+                todoDaysList = gson.fromJson(serializedTodos, type);
+            }
         }
         return todoDaysList;
     }
 
-    public static List<TodoDay> getTodosForCurrentMonth(Date date) {
-        List<TodoDay> result = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
-        for(String day : todoDaysList.keySet()){
-            calendar.setTime(Utils.parseDate(day));
-            if(calendar.get(Calendar.YEAR) == year && calendar.get(Calendar.MONTH) == month){
-                result.add(todoDaysList.get(day));
-            }
-        }
-        return result;
-    }
-
-    public static TodoDay getTodoDayByDate(Date date){
+    public static TodoDay getTodoDayByDate(Date date, Context context){
         String dateStr = Utils.dateFormatter.format(date);
-        TodoDay day = getTodoDaysList().get(dateStr);
+        TodoDay day = getTodoDaysList(context).get(dateStr);
         if(day == null){
             day = new TodoDay(date);
             todoDaysList.put(dateStr, day);
@@ -101,18 +70,18 @@ public class Storage {
         return day;
     }
 
-    public static TodoDay getCurrentTodoDay(){
+    public static TodoDay getCurrentTodoDay(Context context){
         Calendar calendar = Calendar.getInstance();
-        return getTodoDayByDate(calendar.getTime());
+        return getTodoDayByDate(calendar.getTime(), context);
     }
 
-    public static boolean addNewTodo(Todo newTodo) throws CloneNotSupportedException {
+    public static boolean addNewTodo(Todo newTodo, Context context) {
         Date startDate = newTodo.getDateAndTimeStart();
         Date endDate = newTodo.getDateAndTimeEnd();
         String startDateStr = Utils.dateFormatter.format(startDate);
         String endDateStr = Utils.dateFormatter.format(endDate);
         if(startDateStr.equals(endDateStr)) {
-            TodoDay day = getTodoDayByDate(startDate);
+            TodoDay day = getTodoDayByDate(startDate, context);
             if (day != null) {
                 day.addTodo(newTodo);
                 todoDaysList.put(startDateStr, day);
@@ -125,32 +94,54 @@ public class Storage {
             c.setTime(startDate);
             c.set(Calendar.HOUR_OF_DAY, 23);
             c.set(Calendar.MINUTE, 59);
-            TodoDay dayStart = getTodoDayByDate(startDate);
+            TodoDay dayStart = getTodoDayByDate(startDate, context);
             newTodo.setDateAndTimeEnd(c.getTime());
             dayStart.addTodo(newTodo);
             todoDaysList.put(Utils.dateFormatter.format(startDate), dayStart);
             c.add(Calendar.MINUTE, 1);
             while(!Utils.dateFormatter.format(c.getTime()).equals(endDateStr)){
-                TodoDay dayMiddle = getTodoDayByDate(c.getTime());
-                Todo todoMiddle = (Todo) newTodo.clone();
-                todoMiddle.setDateAndTimeStart(c.getTime());
-                c.set(Calendar.HOUR_OF_DAY, 23);
-                c.set(Calendar.MINUTE, 59);
-                todoMiddle.setDateAndTimeEnd(c.getTime());
-                dayMiddle.addTodo(todoMiddle);
-                todoDaysList.put(Utils.dateFormatter.format(c.getTime()), dayMiddle);
-                c.add(Calendar.MINUTE, 1);
+                TodoDay dayMiddle = getTodoDayByDate(c.getTime(), context);
+                try {
+                    Todo todoMiddle = (Todo) newTodo.clone();
+                    todoMiddle.setDateAndTimeStart(c.getTime());
+                    c.set(Calendar.HOUR_OF_DAY, 23);
+                    c.set(Calendar.MINUTE, 59);
+                    todoMiddle.setDateAndTimeEnd(c.getTime());
+                    dayMiddle.addTodo(todoMiddle);
+                    todoDaysList.put(Utils.dateFormatter.format(c.getTime()), dayMiddle);
+                    c.add(Calendar.MINUTE, 1);
+                } catch (CloneNotSupportedException e) {
+                    System.err.println("Todo "+newTodo.getTitle()+ " cannot be cloned.");
+                    e.printStackTrace();
+                    return false;
+                }
             }
-            Todo end = (Todo) newTodo.clone();
-            end.setDateAndTimeStart(c.getTime());
-            end.setDateAndTimeEnd(endDate);
-            TodoDay dayEnd = getTodoDayByDate(c.getTime());
-            todoDaysList.put(Utils.dateFormatter.format(endDate), dayEnd);
-            dayEnd.addTodo(end);
-            return true;
+            try {
+                Todo end = (Todo) newTodo.clone();
+                end.setDateAndTimeStart(c.getTime());
+                end.setDateAndTimeEnd(endDate);
+                TodoDay dayEnd = getTodoDayByDate(c.getTime(), context);
+                todoDaysList.put(Utils.dateFormatter.format(endDate), dayEnd);
+                dayEnd.addTodo(end);
+                return true;
+            } catch (CloneNotSupportedException e) {
+                System.err.println("Todo "+newTodo.getTitle()+ " cannot be cloned.");
+                e.printStackTrace();
+                return false;
+            }
         }
         return false;
     }
+
+    public static void updateTodosInSharedPreferences(Context context){
+        SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_FILE_KEY, 0); //open in private mode
+        SharedPreferences.Editor editor = preferences.edit();
+        Gson gson = new Gson();
+        String tododays  = gson.toJson(getTodoDaysList(context));
+        editor.putString(Constants.TODOS, tododays);
+        editor.apply();
+    }
+
 
     //TODO zbavit se toho az bude db
     public static int getUniqueTodoId(Activity activity){
@@ -187,4 +178,6 @@ public class Storage {
         }
         return null;
     }
+
+
 }

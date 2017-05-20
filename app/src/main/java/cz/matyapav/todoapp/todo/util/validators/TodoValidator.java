@@ -3,10 +3,7 @@ package cz.matyapav.todoapp.todo.util.validators;
 import java.util.Calendar;
 import java.util.Date;
 
-import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.todo.screen.create.CreateTodoViewHolder;
-import cz.matyapav.todoapp.todo.screen.list.TodoDayViewHolder;
-import cz.matyapav.todoapp.todo.util.adapters.TodoDayAdapter;
 import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.Utils;
 

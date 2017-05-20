@@ -1,4 +1,4 @@
-package cz.matyapav.todoapp.todo.util.adapters;
+package cz.matyapav.todoapp.todo.adapters;
 
 /**
  * @author Pavel Matyáš (matyapav@fel.cvut.cz).

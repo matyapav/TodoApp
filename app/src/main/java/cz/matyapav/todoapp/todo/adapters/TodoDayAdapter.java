@@ -1,4 +1,4 @@
-package cz.matyapav.todoapp.todo.util.adapters;
+package cz.matyapav.todoapp.todo.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,12 +20,12 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.FutureTask;
 
 import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.todo.screen.create.CreateTodoActivity;
 import cz.matyapav.todoapp.util.Constants;
+import cz.matyapav.todoapp.util.Storage;
 import cz.matyapav.todoapp.util.Utils;
 
 
@@ -133,12 +133,14 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
                             @Override
                             public void onClick(View view) {
                                 todo.setCompleted(!todo.isCompleted());
+                                Storage.updateTodosInSharedPreferences(context);
                                 notifyItemChanged(pos, todo);
                                 observer.onAdapterDataChanged();
                             }
                         });
                 undoCompletedSnackbar.show();
                 viewHolder.swipeLayout.close();
+                Storage.updateTodosInSharedPreferences(context);
                 notifyItemChanged(pos, todo);
                 observer.onAdapterDataChanged();
             }
@@ -155,6 +157,7 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
                             public void onClick(View view) {
                                 todos.add(position, todo);
                                 notifyItemInserted(position);
+                                Storage.updateTodosInSharedPreferences(context);
                                 observer.onAdapterDataChanged();
                             }
                         });
@@ -163,6 +166,7 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
                 viewHolder.swipeLayout.close();
                 notifyItemRemoved(position);
                 todos.remove(todo);
+                Storage.updateTodosInSharedPreferences(context);
                 observer.onAdapterDataChanged();
             }
         });

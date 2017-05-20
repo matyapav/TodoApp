@@ -10,7 +10,8 @@
     <string name="priority_high">HIGH</string>
     <string name="priority_low">LOW</string>
     <string name="create_todo_priority_label">Priority</string>
-    <string name="create_todo_date_label">Date</string>
+    <string name="create_todo_date_start_label">Start date</string>
+    <string name="create_todo_date_end_label">End date</string>
     <string name="create_todo_start_time_label">Start time</string>
     <string name="create_todo_end_time_label">End time</string>
     <string name="create_todo_category_label">Category</string>

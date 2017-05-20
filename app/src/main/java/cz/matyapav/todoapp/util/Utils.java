@@ -1,6 +1,8 @@
 package cz.matyapav.todoapp.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.widget.Spinner;
@@ -46,10 +48,8 @@ public class Utils {
         return null;
     }
 
-    public static int getValueSpinnerPosition(Spinner spinner, String value)
-    {
+    public static int getValueSpinnerPosition(Spinner spinner, String value) {
         int index = 0;
-
         for (int i=0;i<spinner.getCount();i++){
             if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(value)){
                 index = i;
@@ -59,5 +59,22 @@ public class Utils {
         return index;
     }
 
+    public static int parseHourFromString(String time){
+        return Integer.parseInt(time.substring(0,2));
+    }
+
+    public static int parseMinutesFromString(String time){
+        return Integer.parseInt(time.substring(3,5));
+    }
+
+    public static Date getOnlyDate(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
 
 }

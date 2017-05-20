@@ -20,6 +20,11 @@ public class TodoDay {
         this.todos = new ArrayList<>();
     }
 
+    public TodoDay(Date date) {
+        this.date = date;
+        this.todos = new ArrayList<>();
+    }
+
     public TodoDay(Date date, List<Todo> todos) {
         this.date = date;
         this.todos = todos;
@@ -66,6 +71,14 @@ public class TodoDay {
             }
         }
         return sum;
+    }
+
+    public int getTodosCount(){
+        if(todos == null){
+            return 0;
+        }else{
+            return todos.size();
+        }
     }
 
 

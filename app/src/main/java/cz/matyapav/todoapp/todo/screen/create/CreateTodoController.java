@@ -10,12 +10,15 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import cz.matyapav.todoapp.todo.model.Cathegory;
 import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.todo.util.adapters.CategoryAdapter;
 import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
+import cz.matyapav.todoapp.todo.util.validators.TodoValidator;
+import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.Storage;
 import cz.matyapav.todoapp.util.Utils;
 
@@ -27,10 +30,12 @@ public class CreateTodoController {
 
     Activity context;
     CreateTodoViewHolder vh;
+    Todo editedTodo;
 
-    public CreateTodoController(Activity context, CreateTodoViewHolder vh) {
+    public CreateTodoController(Activity context, CreateTodoViewHolder vh, Todo editedTodo) {
         this.context = context;
         this.vh = vh;
+        this.editedTodo = editedTodo;
     }
 
     void initCategorySpinner() {
@@ -41,10 +46,87 @@ public class CreateTodoController {
         vh.finishFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO zpracuj data a uloz
-                context.onBackPressed();
+                createTodo();
             }
         });
+    }
+
+    void createTodo(){
+        //TODO zpracuj data a uloz
+        //todoName
+        Todo todo = new Todo();
+        TodoValidator validator = new TodoValidator(vh);
+        boolean errors = false;
+
+        String todoName = vh.todoTitle.getText().toString();
+        String dateStartStr = vh.createTodoDateStart.getText().toString();
+        String dateEndStr = vh.createTodoDateEnd.getText().toString();
+        String startTime = vh.createTodoStartTime.getText().toString();
+        String endTime = vh.createTodoEndTime.getText().toString();
+        TodoPriority priority = null;
+        if(vh.lowPrioIcon.getVisibility() == View.VISIBLE){
+            priority = TodoPriority.LOW;
+        }else if(vh.medPrioIcon.getVisibility() == View.VISIBLE){
+            priority = TodoPriority.MEDIUM;
+        }else if(vh.highPrioIcon.getVisibility() == View.VISIBLE){
+            priority = TodoPriority.HIGH;
+        }
+        Date dateStart =Utils.parseDate(dateStartStr);
+        Date dateEnd = Utils.parseDate(dateEndStr);
+        if(dateStart != null && dateEnd != null && !startTime.isEmpty() && !endTime.isEmpty()) {
+            int startTimeHour = Utils.parseHourFromString(startTime);
+            int startTimeMinutes = Utils.parseMinutesFromString(startTime);
+            int endTimeHour = Utils.parseHourFromString(endTime);
+            int endTImeMinutes = Utils.parseMinutesFromString(endTime);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dateStart);
+            calendar.set(Calendar.HOUR_OF_DAY, startTimeHour);
+            calendar.set(Calendar.MINUTE, startTimeMinutes);
+            dateStart = calendar.getTime();
+            calendar.setTime(dateEnd);
+            calendar.set(Calendar.HOUR_OF_DAY, endTimeHour);
+            calendar.set(Calendar.MINUTE, endTImeMinutes);
+            dateEnd = calendar.getTime();
+        }
+
+        errors = validator.validateTitle(todoName) |
+                validator.validateStartDateEmpty(dateStartStr) |
+                validator.validateStartDateInPast(dateStart) |
+                validator.validateEndDateEmpty(dateEndStr) |
+                validator.validateEndDateInPast(dateEnd) |
+                validator.validateStartTimeEmpty(startTime) |
+                validator.validateEndTimeEmpty(endTime) |
+                validator.validateEndTimeBeforeStartTime(dateStart, dateEnd);
+
+        if(!errors) {
+            todo.setTitle(todoName);
+            todo.setPriority(priority);
+            todo.setDateAndTimeStart(dateStart);
+            todo.setDateAndTimeEnd(dateEnd);
+            Cathegory cathegory = (Cathegory) vh.cathegorySpinner.getSelectedItem();
+            todo.setCathegory(cathegory);
+            todo.setNotification(vh.notification.isChecked());
+            todo.setDescription(vh.description.getText().toString());
+            if(editedTodo == null){
+                todo.setId(Storage.getUniqueTodoId(context));
+            }
+            saveTodo(todo);
+        }
+    }
+
+    void saveTodo(Todo todo){
+        if(editedTodo == null) {
+            try {
+                Storage.addNewTodo(todo);
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+
+        }else{
+            Storage.editTodo(editedTodo.getId(), todo);
+        }
+        context.setResult(Activity.RESULT_OK);
+        context.finish();
     }
 
     void setListenersToPriorityButtons() {
@@ -75,10 +157,16 @@ public class CreateTodoController {
     }
 
     void setListenersToDateAndTimePickers() {
-        vh.createTodoDate.setOnClickListener(new View.OnClickListener() {
+        vh.createTodoDateStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog();
+                showDatePickerDialog(true);
+            }
+        });
+        vh.createTodoDateEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(false);
             }
         });
         vh.createTodoStartTime.setOnClickListener(new View.OnClickListener() {
@@ -113,19 +201,25 @@ public class CreateTodoController {
                 }
             }
         }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+        timePickerDialog.setCancelable(false);
         timePickerDialog.show();
     }
 
-    private void showDatePickerDialog() {
+    private void showDatePickerDialog(final boolean isStartDate) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                vh.createTodoDate.setText(Utils.dateFormatter.format(newDate.getTime()));
+                if(isStartDate) {
+                    vh.createTodoDateStart.setText(Utils.dateFormatter.format(newDate.getTime()));
+                }else{
+                    vh.createTodoDateEnd.setText(Utils.dateFormatter.format(newDate.getTime()));
+                }
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.setCancelable(false);
         datePickerDialog.show();
     }
 
@@ -134,9 +228,10 @@ public class CreateTodoController {
         selectPriority(todo.getPriority());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(todo.getDateAndTimeStart());
-        vh.createTodoDate.setText(Utils.dateFormatter.format(calendar.getTime()));
+        vh.createTodoDateStart.setText(Utils.dateFormatter.format(calendar.getTime()));
         vh.createTodoStartTime.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
         calendar.setTime(todo.getDateAndTimeEnd());
+        vh.createTodoDateEnd.setText(Utils.dateFormatter.format(calendar.getTime()));
         vh.createTodoEndTime.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
         vh.cathegorySpinner.setSelection(Utils.getValueSpinnerPosition(vh.cathegorySpinner, todo.getCathegory().getCathegoryName()));
         vh.notification.setChecked(todo.isNotification());
@@ -146,9 +241,15 @@ public class CreateTodoController {
     private void selectPriority(TodoPriority priority) {
         if (priority.equals(TodoPriority.LOW)) {
             vh.lowPrioIcon.setVisibility(View.VISIBLE);
+            vh.medPrioIcon.setVisibility(View.INVISIBLE);
+            vh.highPrioIcon.setVisibility(View.INVISIBLE);
         } else if (priority.equals(TodoPriority.MEDIUM)) {
+            vh.lowPrioIcon.setVisibility(View.INVISIBLE);
             vh.medPrioIcon.setVisibility(View.VISIBLE);
+            vh.highPrioIcon.setVisibility(View.INVISIBLE);
         } else if (priority.equals(TodoPriority.HIGH)){
+            vh.lowPrioIcon.setVisibility(View.INVISIBLE);
+            vh.medPrioIcon.setVisibility(View.INVISIBLE);
             vh.highPrioIcon.setVisibility(View.VISIBLE);
         }else{
             throw new IllegalArgumentException("Priority does not exists");
@@ -156,4 +257,8 @@ public class CreateTodoController {
     }
 
 
+    public void prefillStartAndEndDate(String currentDate) {
+        vh.createTodoDateStart.setText(currentDate);
+        vh.createTodoDateEnd.setText(currentDate);
+    }
 }

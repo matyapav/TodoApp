@@ -12,7 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -42,9 +44,9 @@ public class CalendarAdapter extends ArrayAdapter<TodoDay> {
     public View getView(int position, View convertView, ViewGroup parent) {
         final TodoDay day = getItem(position);
 
-        if(convertView == null) {
+       if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.calendar_item, parent, false);
-        }
+       }
 
         TextView dayView = (TextView) convertView.findViewById(R.id.calendar_day_view);
         TextView lowTasks = (TextView) convertView.findViewById(R.id.calendar_day_view_low_priority_tasks);

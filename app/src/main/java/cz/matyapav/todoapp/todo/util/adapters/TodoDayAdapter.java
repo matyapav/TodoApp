@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,7 +20,7 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
+import java.util.concurrent.FutureTask;
 
 import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.model.Todo;
@@ -48,14 +48,16 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
             }
         }
     };
+    private Fragment fragment;
 
-    public TodoDayAdapter(Activity context, final List<Todo> todos, AdapterObserver observer) {
+    public TodoDayAdapter(Activity context, final List<Todo> todos, AdapterObserver observer, Fragment fragment) {
         this.context = context;
         this.todos = todos;
         this.observer = observer;
         this.showCompleted = true; //default on first run is true;
         SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
         preferences.registerOnSharedPreferenceChangeListener(listener);
+        this.fragment = fragment;
     }
 
     //3
@@ -115,7 +117,7 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
             public void onClick(View v) {
                 Intent i = new Intent(context, CreateTodoActivity.class);
                 i.putExtra(Constants.PREFILLED_TODO, todo);
-                context.startActivity(i);
+                fragment.startActivityForResult(i, Constants.TODO_CREATE_EDIT_REQUEST_CODE);
             }
         });
 
@@ -181,6 +183,12 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
     public void changeDataSet(List<Todo> data){
         this.todos = data;
         notifyDataSetChanged();
+        observer.onAdapterDataChanged();
+    }
+
+    public void changeDataSet(){
+        notifyDataSetChanged();
+        observer.onAdapterDataChanged();
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
@@ -202,8 +210,6 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
             doneLayout = itemView.findViewById(R.id.bottom_left_wrapper);
             deleteLayout = itemView.findViewById(R.id.bottom_right_wrapper);
         }
-
     }
-
 
 }

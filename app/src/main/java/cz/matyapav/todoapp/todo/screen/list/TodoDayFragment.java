@@ -1,12 +1,10 @@
 package cz.matyapav.todoapp.todo.screen.list;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,17 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 import cz.matyapav.todoapp.R;
-import cz.matyapav.todoapp.todo.util.adapters.TodoDayAdapter;
-import cz.matyapav.todoapp.todo.screen.create.CreateTodoActivity;
-import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.util.Constants;
-import cz.matyapav.todoapp.util.Utils;
 
 /**
  * @author Pavel Matyáš (matyapav@fel.cvut.cz).
@@ -45,7 +36,7 @@ public class TodoDayFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.todo_today));
         setHasOptionsMenu(true);
 
-        controller = new TodoDayController(getActivity(), new TodoDayViewHolder(view));
+        controller = new TodoDayController(getActivity(), new TodoDayViewHolder(view), this);
         controller.initTodoListAdapter();
         controller.setDay(currentDate);
         controller.setTodoStatus();
@@ -68,5 +59,14 @@ public class TodoDayFragment extends Fragment {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == Constants.TODO_CREATE_EDIT_REQUEST_CODE){
+            if(resultCode == Activity.RESULT_OK){
+                controller.notifyAdapterDataChanged();
+            }
+        }
     }
 }

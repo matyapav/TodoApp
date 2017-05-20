@@ -23,6 +23,7 @@ import cz.matyapav.todoapp.todo.model.TodoDay;
 import cz.matyapav.todoapp.todo.screen.create.CreateTodoActivity;
 import cz.matyapav.todoapp.todo.screen.list.TodoDayFragment;
 import cz.matyapav.todoapp.todo.util.adapters.CalendarAdapter;
+import cz.matyapav.todoapp.todo.util.adapters.TodoDayAdapter;
 import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.Storage;
 import cz.matyapav.todoapp.util.Utils;
@@ -36,13 +37,15 @@ public class TodoAllController {
     FragmentActivity context;
     TodoAllViewHolder vh;
     Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+    Fragment fragment;
 
     private static final int DAYS_COUNT = 42;
 
 
-    public TodoAllController(FragmentActivity context, final TodoAllViewHolder vh) {
+    public TodoAllController(FragmentActivity context, final TodoAllViewHolder vh, Fragment fragment) {
         this.context = context;
         this.vh = vh;
+        this.fragment = fragment;
     }
 
     void setFabAction(){
@@ -50,7 +53,7 @@ public class TodoAllController {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, CreateTodoActivity.class);
-                context.startActivity(i);
+                fragment.startActivityForResult(i, Constants.TODO_CREATE_EDIT_REQUEST_CODE);
             }
         });
     }
@@ -69,24 +72,46 @@ public class TodoAllController {
         int monthBeginningCell = calendar.get(Calendar.DAY_OF_WEEK)-2;
         calendar.add(Calendar.DAY_OF_MONTH, -monthBeginningCell);
 
-
         HashMap<String, TodoDay> days = Storage.getTodoDaysList();
         List<TodoDay> daysToCalendar = new ArrayList<>();
-
         //TODO vylepsit kdyz bude cas
         for (int i = 0; i < DAYS_COUNT; i++) {
+            boolean addedFromDays = false;
             for(String day : days.keySet()){
-                if(Utils.dateFormatter.format(calendar.getTime()).equals(day)){
+                String dayStr = Utils.dateFormatter.format(calendar.getTime());
+                if(dayStr.equals(day)){
                     daysToCalendar.add(days.get(day));
-                }else{
-                    daysToCalendar.add(new TodoDay(calendar.getTime(), null));
+                    addedFromDays = true;
+                    break;
                 }
+            }
+            if(!addedFromDays) {
+                daysToCalendar.add(new TodoDay(calendar.getTime(), null));
             }
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
+        setCurrentMonthTodosCount(daysToCalendar, this.calendar);
 
         vh.calendarView.setAdapter(new CalendarAdapter(context, daysToCalendar, this.calendar.get(Calendar.MONTH)));
         // update grid
+    }
+
+    private void setCurrentMonthTodosCount(List<TodoDay> todos, Calendar calendar) {
+        int sumOfCompleted = 0;
+        int sumOfAll = 0;
+
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentYear = calendar.get(Calendar.YEAR);
+        for (TodoDay todo : todos) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(todo.getDate());
+            if(c.get(Calendar.MONTH) == currentMonth && c.get(Calendar.YEAR) == currentYear){
+                sumOfAll+= todo.getTodosCount();
+                sumOfCompleted += todo.getNumberOfCompletedTodos();
+            }
+        }
+        vh.numberOfAll.setText(String.valueOf(sumOfAll));
+        vh.numberOfCompleted.setText(String.valueOf(sumOfCompleted));
     }
 
     void setListenersOnDays(){
@@ -117,6 +142,7 @@ public class TodoAllController {
                 calendar.add(Calendar.MONTH, -1);
                 setCurrentMonth();
                 setCurrentMonthDays();
+                animateCalendar();
             }
         });
     }
@@ -128,14 +154,19 @@ public class TodoAllController {
                 calendar.add(Calendar.MONTH, 1);
                 setCurrentMonth();
                 setCurrentMonthDays();
+                animateCalendar();
             }
         });
     }
 
+    public void notifyAdapterDataChanged(){
+        vh.calendarView.setAdapter(null);
+        setCurrentMonthDays();
+    }
+
     void animateCalendar(){
-
-
-
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.calendar_animation);
+        vh.calendarView.startAnimation(animation);
     }
 
     //TODO set monthly total todo count and completed count

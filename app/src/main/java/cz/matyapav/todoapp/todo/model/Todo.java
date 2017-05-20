@@ -10,8 +10,9 @@ import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
  * @author Pavel Matyáš (matyapav@fel.cvut.cz).
  * @since 1.0.0..
  */
-public class Todo implements Serializable {
+public class Todo implements Serializable, Cloneable{
 
+    private int id;
     private String title;
     private Date dateAndTimeStart;
     private Date dateAndTimeEnd;
@@ -21,11 +22,14 @@ public class Todo implements Serializable {
     private boolean completed;
     private TodoPriority priority;
 
+    private boolean multipleDays;
+
     public Todo() {
         //ma byt prazdny
     }
 
     public Todo(
+            int id,
             Cathegory cathegory,
             boolean completed,
             Date dateAndTimeEnd,
@@ -33,8 +37,10 @@ public class Todo implements Serializable {
             String description,
             boolean notification,
             TodoPriority priority,
-            String title
+            String title,
+            boolean multipleDays
     ){
+        this.id = id;
         this.cathegory = cathegory;
         this.completed = completed;
         this.dateAndTimeEnd = dateAndTimeEnd;
@@ -43,6 +49,7 @@ public class Todo implements Serializable {
         this.notification = notification;
         this.priority = priority;
         this.title = title;
+        this.multipleDays = multipleDays;
     }
 
     public Cathegory getCathegory() {
@@ -108,4 +115,27 @@ public class Todo implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean isMultipleDays() {
+        return multipleDays;
+    }
+
+    public void setMultipleDays(boolean multipleDays) {
+        this.multipleDays = multipleDays;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+
 }

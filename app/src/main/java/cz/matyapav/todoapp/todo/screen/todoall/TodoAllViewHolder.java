@@ -22,6 +22,8 @@ public class TodoAllViewHolder extends ViewHolder {
     Button prevMonth;
     GridView calendarView;
     FloatingActionButton newTodoFab;
+    TextView numberOfCompleted;
+    TextView numberOfAll;
 
     public TodoAllViewHolder(View context) {
         super(context);
@@ -34,6 +36,8 @@ public class TodoAllViewHolder extends ViewHolder {
         prevMonth = (Button) getContext().findViewById(R.id.calendar_prev_button);
         calendarView = (GridView) getContext().findViewById(R.id.calendar_grid);
         newTodoFab = (FloatingActionButton) getContext().findViewById(R.id.todo_all_create_fab);
+        numberOfCompleted = (TextView) getContext().findViewById(R.id.todo_all_completed_number);
+        numberOfAll = (TextView) getContext().findViewById(R.id.todo_all_total_number);
     }
 
 

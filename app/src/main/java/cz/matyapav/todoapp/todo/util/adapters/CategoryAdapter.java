@@ -65,4 +65,5 @@ public class CategoryAdapter extends ArrayAdapter<Cathegory> {
     public long getItemId(int position) {
         return position;
     }
+
 }

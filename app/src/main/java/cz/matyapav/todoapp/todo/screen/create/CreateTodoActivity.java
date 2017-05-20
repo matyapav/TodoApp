@@ -1,8 +1,10 @@
 package cz.matyapav.todoapp.todo.screen.create;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -21,11 +23,16 @@ public class CreateTodoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //get views
-        CreateTodoController controller =
-                new CreateTodoController(this,new CreateTodoViewHolder(findViewById(R.id.activity_create_todo)));
 
+        CreateTodoController controller;
 
+        Todo prefilledTodo = (Todo) getIntent().getSerializableExtra(Constants.PREFILLED_TODO);
+        controller = new CreateTodoController(this,new CreateTodoViewHolder(findViewById(R.id.activity_create_todo)), prefilledTodo);
+
+        String currentDate = getIntent().getStringExtra(Constants.CURRENT_DATE);
+        if(currentDate != null){
+            controller.prefillStartAndEndDate(currentDate);
+        }
         //set actions on date and time pickers
         controller.setListenersToDateAndTimePickers();
 
@@ -38,13 +45,12 @@ public class CreateTodoActivity extends AppCompatActivity {
         //set category spinner items
         controller.initCategorySpinner();
 
-        controller.setFabAction();
-
-        Todo prefilledTodo = (Todo) getIntent().getSerializableExtra(Constants.PREFILLED_TODO);
+        //must be called after initialization of category spinner
         if(prefilledTodo != null){
             controller.fillTodoIntoView(prefilledTodo);
             setTitle("Edit tudu");
         }
+        controller.setFabAction();
     }
 
     @Override
@@ -55,12 +61,14 @@ public class CreateTodoActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+        finish();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                setResult(RESULT_CANCELED);
                 FragmentManager fm = getSupportFragmentManager();
                 if (fm.getBackStackEntryCount() > 0) {
                     fm.popBackStack();
@@ -69,6 +77,12 @@ public class CreateTodoActivity extends AppCompatActivity {
                 }
                 return true;
         }
+        finish();
         return(super.onOptionsItemSelected(item));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

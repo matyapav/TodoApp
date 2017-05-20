@@ -1,5 +1,7 @@
 package cz.matyapav.todoapp.todo.screen.todoall;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,12 +17,14 @@ import java.util.Date;
 import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.screen.list.TodoDayController;
 import cz.matyapav.todoapp.todo.screen.list.TodoDayViewHolder;
+import cz.matyapav.todoapp.util.Constants;
 
 /**
  * @author Pavel Matyáš (matyapav@fel.cvut.cz).
  * @since 1.0.0..
  */
 public class TodoAllFragment extends Fragment {
+    TodoAllController controller;
 
     @Nullable
     @Override
@@ -30,7 +34,7 @@ public class TodoAllFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.todo_all));
         setHasOptionsMenu(false);
 
-        TodoAllController controller = new TodoAllController(getActivity(), new TodoAllViewHolder(view));
+        controller = new TodoAllController(getActivity(), new TodoAllViewHolder(view), this);
         controller.setCurrentMonth();
         controller.setCurrentMonthDays();
         controller.setListenersOnDays();
@@ -39,6 +43,16 @@ public class TodoAllFragment extends Fragment {
         controller.setFabAction();
         return view;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == Constants.TODO_CREATE_EDIT_REQUEST_CODE){
+            if(resultCode == Activity.RESULT_OK){
+                controller.notifyAdapterDataChanged();
+            }
+        }
+    }
+
 
 
 

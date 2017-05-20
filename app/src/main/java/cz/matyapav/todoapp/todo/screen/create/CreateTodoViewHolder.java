@@ -17,20 +17,21 @@ import cz.matyapav.todoapp.ViewHolder;
  */
 public class CreateTodoViewHolder extends ViewHolder {
 
-    EditText createTodoDate;
-    EditText createTodoStartTime;
-    EditText createTodoEndTime;
-    LinearLayout lowPrioWrapper;
-    LinearLayout medPrioWrapper;
-    LinearLayout highPrioWrapper;
-    ImageView lowPrioIcon;
-    ImageView medPrioIcon;
-    ImageView highPrioIcon;
-    Spinner cathegorySpinner;
-    FloatingActionButton finishFab;
-    EditText todoTitle;
-    Switch notification;
-    EditText description;
+    public EditText createTodoDateStart;
+    public EditText createTodoDateEnd;
+    public EditText createTodoStartTime;
+    public EditText createTodoEndTime;
+    public LinearLayout lowPrioWrapper;
+    public LinearLayout medPrioWrapper;
+    public LinearLayout highPrioWrapper;
+    public ImageView lowPrioIcon;
+    public ImageView medPrioIcon;
+    public ImageView highPrioIcon;
+    public Spinner cathegorySpinner;
+    public FloatingActionButton finishFab;
+    public EditText todoTitle;
+    public Switch notification;
+    public EditText description;
 
 
     public CreateTodoViewHolder(View context) {
@@ -39,7 +40,8 @@ public class CreateTodoViewHolder extends ViewHolder {
 
     @Override
     public void findViews() {
-        createTodoDate = (EditText) getContext().findViewById(R.id.create_todo_date);
+        createTodoDateStart = (EditText) getContext().findViewById(R.id.create_todo_date_start);
+        createTodoDateEnd = (EditText) getContext().findViewById(R.id.create_todo_date_end);
         createTodoStartTime = (EditText) getContext().findViewById(R.id.create_todo_start_time);
         createTodoEndTime = (EditText) getContext().findViewById(R.id.create_todo_end_time);
         lowPrioWrapper = (LinearLayout) getContext().findViewById(R.id.create_todo_low_priority_btn);

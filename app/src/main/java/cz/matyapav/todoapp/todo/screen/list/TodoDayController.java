@@ -89,8 +89,8 @@ public class TodoDayController implements AdapterObserver {
             calendar.setTime(currentDate);
         }
         vh.dayOfMonth.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-        vh.dayOfWeek.setText(calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH));
-        vh.month.setText(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH));
+        vh.dayOfWeek.setText(calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, context.getResources().getConfiguration().locale));
+        vh.month.setText(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, context.getResources().getConfiguration().locale));
         currentDay = Storage.getTodoDayByDate(calendar.getTime(), context);
         TodoDayAdapter adapter = (TodoDayAdapter) vh.listView.getAdapter();
         if(currentDay != null) {

@@ -18,4 +18,6 @@ public class Constants {
     public static final int TODO_CREATE_EDIT_REQUEST_CODE = 25;
     public static final String TODOS = "todos";
 
+    public static final String SETTING_FRAGMENT_TAG = "settings_fragment";
+    public static final String CURRENT_FRAGMENT = "current_fragment";
 }

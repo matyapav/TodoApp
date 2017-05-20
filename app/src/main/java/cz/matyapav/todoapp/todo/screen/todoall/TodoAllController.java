@@ -23,6 +23,7 @@ import cz.matyapav.todoapp.todo.model.TodoDay;
 import cz.matyapav.todoapp.todo.screen.create.CreateTodoActivity;
 import cz.matyapav.todoapp.todo.screen.list.TodoDayFragment;
 import cz.matyapav.todoapp.todo.adapters.CalendarAdapter;
+import cz.matyapav.todoapp.todo.util.enums.SupportedLanguages;
 import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.Storage;
 import cz.matyapav.todoapp.util.Utils;
@@ -35,7 +36,7 @@ public class TodoAllController {
 
     FragmentActivity context;
     TodoAllViewHolder vh;
-    Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+    Calendar calendar = Calendar.getInstance();
     Fragment fragment;
 
     private static final int DAYS_COUNT = 42;
@@ -59,16 +60,23 @@ public class TodoAllController {
 
 
     void setCurrentMonth(){
-        String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+        String month = null;
+        String locale = context.getResources().getConfiguration().locale.getLanguage();
+        if(locale.equals(SupportedLanguages.CZECH.getLangAbbreviation())){
+            month = Utils.getMonthStandaloneName(calendar.get(Calendar.MONTH));
+        }else {
+            month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, context.getResources().getConfiguration().locale);
+        }
         String year = String.valueOf(calendar.get(Calendar.YEAR));
         vh.currentMonth.setText(month + " " + year);
     }
 
     void setCurrentMonthDays(){
-//        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-        Calendar calendar = (Calendar) this.calendar.clone();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, this.calendar.get(Calendar.YEAR));
+        calendar.set(Calendar.MONTH, this.calendar.get(Calendar.MONTH));
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        int monthBeginningCell = calendar.get(Calendar.DAY_OF_WEEK)-2;
+        int monthBeginningCell = (7 + calendar.get(Calendar.DAY_OF_WEEK)-Calendar.MONDAY) % 7;
         calendar.add(Calendar.DAY_OF_MONTH, -monthBeginningCell);
 
         HashMap<String, TodoDay> days = Storage.getTodoDaysList(context);
@@ -87,7 +95,7 @@ public class TodoAllController {
             if(!addedFromDays) {
                 daysToCalendar.add(new TodoDay(calendar.getTime(), null));
             }
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
         }
         setCurrentMonthTodosCount(daysToCalendar, this.calendar);
 

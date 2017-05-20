@@ -5,7 +5,7 @@
         <item
             android:id="@+id/action_show_completed"
             android:orderInCategory="100"
-            android:title="Show completed"
+            android:title="@string/show_completed"
             android:checked="true"
             app:showAsAction="never" >
         </item>

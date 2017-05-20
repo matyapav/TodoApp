@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="62dp"
             android:layout_margin="5dp"
-            android:hint="e.g. Study for exam"
+            android:hint="@string/e_g_study_for_exam"
             android:textAlignment="center"
             android:textSize="28sp" />
         <!-- TUDU TITLE END -->
@@ -320,7 +320,7 @@
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/rect_all_corners_rounded"
                         android:gravity="top|start"
-                        android:hint="Write todo description here..."
+                        android:hint="@string/write_todo_description_here"
                         android:inputType="textMultiLine"
                         android:lines="20"
                         android:minLines="5"

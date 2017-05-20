@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_margin="8dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/application_settings"/>
+
+    <RelativeLayout
+        android:id="@+id/settings_language_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="10"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/primary_text"
+                    android:text="@string/language"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/settings_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/secondary_text"
+                    android:text="English"
+                    android:paddingBottom="7dp"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_margin="8dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/data_settings"/>
+    <RelativeLayout
+        android:id="@+id/settings_import_data"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+           >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary_text"
+                    android:text="@string/import_data"
+                    android:textSize="18sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

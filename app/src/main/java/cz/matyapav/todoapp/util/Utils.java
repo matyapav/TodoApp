@@ -14,9 +14,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.model.TodoDay;
+import cz.matyapav.todoapp.todo.util.enums.SupportedLanguages;
 import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
 import cz.matyapav.todoapp.todo.model.Cathegory;
 import cz.matyapav.todoapp.todo.model.Todo;
@@ -77,4 +79,43 @@ public class Utils {
         return calendar.getTime();
     }
 
+    public static String[] getSupportedLanguagesAsArray(){
+        int numberOfLangs = SupportedLanguages.values().length;
+        String[] result = new String[numberOfLangs];
+        for (int i = 0; i < numberOfLangs; i++) {
+            result[i] = SupportedLanguages.values()[i].getLangName();
+        }
+        return result;
+    }
+
+    public static String getMonthStandaloneName(int month) {
+        switch (month+1){
+            case 1:
+                return "Leden";
+            case 2:
+                return "Únor";
+            case 3:
+                return "Březen";
+            case 4:
+                return "Duben";
+            case 5:
+                return "Květen";
+            case 6:
+                return "Červen";
+            case 7:
+                return "Červenec";
+            case 8:
+                return "Srpen";
+            case 9:
+                return "Zaří";
+            case 10:
+                return "Říjen";
+            case 11:
+                return "Listopad";
+            case 12:
+                return "Prosinec";
+            default:
+                return null;
+        }
+    }
 }

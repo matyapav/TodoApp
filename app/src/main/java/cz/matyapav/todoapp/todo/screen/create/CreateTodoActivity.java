@@ -48,7 +48,7 @@ public class CreateTodoActivity extends AppCompatActivity {
         //must be called after initialization of category spinner
         if(prefilledTodo != null){
             controller.fillTodoIntoView(prefilledTodo);
-            setTitle("Edit tudu");
+            setTitle(getResources().getString(R.string.edit_todo));
         }
         controller.setFabAction();
     }

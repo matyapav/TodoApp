@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Tudus</string>
+
+    <string name="navigation_drawer_open">Otevřít navigaci</string>
+    <string name="navigation_drawer_close">Zavřít navigaci</string>
+
+    <string name="action_settings">Nastavení</string>
+    <string name="title_activity_create_todo">CreateTodoActivity</string>
+    <string name="priority_medium">STŘEDNÍ</string>
+    <string name="priority_high">VYSOKÁ</string>
+    <string name="priority_low">NÍZKÁ</string>
+    <string name="create_todo_priority_label">Priorita</string>
+    <string name="create_todo_date_start_label">Datum začátku</string>
+    <string name="create_todo_date_end_label">Datum konce</string>
+    <string name="create_todo_start_time_label">Čas začátku</string>
+    <string name="create_todo_end_time_label">Čas konce</string>
+    <string name="create_todo_category_label">Kategorie</string>
+    <string name="create_todo_notification_label">Notifikace</string>
+    <string name="create_todo_description_label">Popisek</string>
+    <string name="todo_today">Dnešní úkoly</string>
+    <string name="todo_all">Všechny úkoly</string>
+    <string name="buzer_today">Dnešní Buzer</string>
+    <string name="buzer_list">Buzer lístek</string>
+    <string name="ideas">Nápady</string>
+    <string name="new_todo">Nový úkol</string>
+    <string name="title_activity_settings">Nastavení</string>
+    <string name="select_language">Vyberte jazyk</string>
+    <string name="application_settings">Nastavení aplikace</string>
+    <string name="create_todo_date_label">Datum</string>
+    <string name="data_settings">Nastavení dat</string>
+    <string name="language">Jazyk</string>
+    <string name="mon">PO</string>
+    <string name="tue">ÚT</string>
+    <string name="wed">ST</string>
+    <string name="thu">ČT</string>
+    <string name="fri">PÁ</string>
+    <string name="sat">SO</string>
+    <string name="sun">NE</string>
+    <string name="write_todo_description_here">Zde zadejte popisek úkolu...</string>
+    <string name="e_g_study_for_exam">např. Studium na zkoušku</string>
+    <string name="import_data">Importovat data</string>
+    <string name="edit_todo">Upravit úkol</string>
+    <string name="close_app_message">Opravdu chcete ukončit aplikaci Tudus?</string>
+    <string name="close_app_title">Uzavírám Tudus</string>
+    <string name="yes">Ano</string>
+    <string name="no">Ne</string>
+    <string name="show_completed">Zobrazovat dokončené</string>
+
+</resources>

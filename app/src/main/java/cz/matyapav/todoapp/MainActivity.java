@@ -16,8 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import cz.matyapav.todoapp.settings.SettingsFragment;
 import cz.matyapav.todoapp.todo.screen.list.TodoDayFragment;
 import cz.matyapav.todoapp.todo.screen.todoall.TodoAllFragment;
+import cz.matyapav.todoapp.util.Constants;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,12 +41,19 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_todo_today);
+
+        //determine first fragment
         try {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.mainLayout, TodoDayFragment.class.newInstance()).commit();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+            String firstFragment = null;
+            if((firstFragment = getIntent().getStringExtra(Constants.CURRENT_FRAGMENT)) != null){
+                if(firstFragment.equals(Constants.SETTING_FRAGMENT_TAG)){
+                    fragmentManager.beginTransaction().replace(R.id.mainLayout, SettingsFragment.class.newInstance()).commit();
+                }
+            }else {
+                fragmentManager.beginTransaction().replace(R.id.mainLayout, TodoDayFragment.class.newInstance()).commit();
+            }
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -57,9 +66,9 @@ public class MainActivity extends AppCompatActivity
         } else {
             new AlertDialog.Builder(this)
                     .setIcon(R.drawable.ic_announcement_24dp)
-                    .setTitle("Closing Tudus")
-                    .setMessage("Are you sure you want to close Tudus?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                    .setTitle(getResources().getString(R.string.close_app_title))
+                    .setMessage(getResources().getString(R.string.close_app_message))
+                    .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener()
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -67,7 +76,7 @@ public class MainActivity extends AppCompatActivity
                         }
 
                     })
-                    .setNegativeButton("No", null)
+                    .setNegativeButton(getResources().getString(R.string.no), null)
                     .show();
         }
     }
@@ -114,6 +123,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_ideas) {
             // Show ideas
         } else if (id == R.id.nav_settings) {
+            fragmentClass = SettingsFragment.class;
             // Show settings
         }else if (id == R.id.nav_help) {
             // Show help
@@ -123,7 +133,7 @@ public class MainActivity extends AppCompatActivity
         try {
             fragment = (Fragment) fragmentClass.newInstance();
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.mainLayout, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.mainLayout, fragment, Constants.SETTING_FRAGMENT_TAG).commit();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -23,49 +23,49 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="#222222"
-            android:text="MON"/>
+            android:text="@string/mon"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="#222222"
-            android:text="TUE"/>
+            android:text="@string/tue"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="#222222"
-            android:text="WED"/>
+            android:text="@string/wed"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="#222222"
-            android:text="THU"/>
+            android:text="@string/thu"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="#222222"
-            android:text="FRI"/>
+            android:text="@string/fri"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="#222222"
-            android:text="SAT"/>
+            android:text="@string/sat"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="#222222"
-            android:text="SUN"/>
+            android:text="@string/sun"/>
     </LinearLayout>
     <!-- days view -->
     <GridView

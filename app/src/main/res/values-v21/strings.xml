@@ -16,4 +16,22 @@
     <string name="buzer_list">Buzer list</string>
     <string name="ideas">Ideas</string>
     <string name="new_todo">New tudu</string>
+    <string name="language">Language</string>
+    <string name="application_settings">Application settings</string>
+    <string name="data_settings">Data settings</string>
+    <string name="mon">MON</string>
+    <string name="tue">TUE</string>
+    <string name="wed">WED</string>
+    <string name="thu">THU</string>
+    <string name="fri">FRI</string>
+    <string name="sat">SAT</string>
+    <string name="sun">SUN</string>
+    <string name="write_todo_description_here">Write todo description here...</string>
+    <string name="import_data">Import data</string>
+    <string name="edit_todo">Edit tudu</string>
+    <string name="close_app_title">Closing Tudus</string>
+    <string name="close_app_message">Are you sure you want ot close Tudus?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="show_completed">Show completed</string>
 </resources>

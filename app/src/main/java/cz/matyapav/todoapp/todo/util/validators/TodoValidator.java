@@ -21,7 +21,7 @@ public class TodoValidator {
 
     public boolean validateTitle(String todoName){
         if(todoName.isEmpty()){
-            vh.todoTitle.setError(Constants.VALIDATION_REQUIRED);
+            vh.todoTitle.setError(vh.getContext().getResources().getString(Constants.VALIDATION_REQUIRED));
             return true;
         }else{
             vh.todoTitle.setError(null);
@@ -31,7 +31,7 @@ public class TodoValidator {
 
     public boolean validateStartDateEmpty(String dateStartStr){
         if(dateStartStr.isEmpty()){
-            vh.createTodoDateStart.setError(Constants.VALIDATION_REQUIRED);
+            vh.createTodoDateStart.setError(vh.getContext().getResources().getString(Constants.VALIDATION_REQUIRED));
             return true;
         }else{
             vh.createTodoDateStart.setError(null);
@@ -41,7 +41,7 @@ public class TodoValidator {
 
     public boolean validateEndDateEmpty(String dateEndStr){
         if(dateEndStr.isEmpty()){
-            vh.createTodoDateEnd.setError(Constants.VALIDATION_REQUIRED);
+            vh.createTodoDateEnd.setError(vh.getContext().getResources().getString(Constants.VALIDATION_REQUIRED));
             return true;
         }else{
             vh.createTodoDateEnd.setError(null);
@@ -51,7 +51,7 @@ public class TodoValidator {
 
     public boolean validateStartTimeEmpty(String startTime){
         if(startTime.isEmpty()){
-            vh.createTodoStartTime.setError(Constants.VALIDATION_REQUIRED);
+            vh.createTodoStartTime.setError(vh.getContext().getResources().getString(Constants.VALIDATION_REQUIRED));
             return true;
         }else{
             vh.createTodoStartTime.setError(null);
@@ -61,7 +61,7 @@ public class TodoValidator {
 
     public boolean validateEndTimeEmpty(String endTime){
         if(endTime.isEmpty()){
-            vh.createTodoEndTime.setError(Constants.VALIDATION_REQUIRED);
+            vh.createTodoEndTime.setError(vh.getContext().getResources().getString(Constants.VALIDATION_REQUIRED));
             return true;
         }else{
             vh.createTodoEndTime.setError(null);
@@ -72,10 +72,10 @@ public class TodoValidator {
     public boolean validateEndTimeBeforeStartTime(Date dateStart, Date dateEnd){
         if(dateStart != null && dateEnd != null) {
             if(dateStart.compareTo(dateEnd) >= 0){
-                vh.createTodoStartTime.setError(Constants.START_AFTER_END);
-                vh.createTodoEndTime.setError(Constants.START_AFTER_END);
-                vh.createTodoDateStart.setError(Constants.START_AFTER_END);
-                vh.createTodoDateEnd.setError(Constants.START_AFTER_END);
+                vh.createTodoStartTime.setError(vh.getContext().getResources().getString(Constants.START_AFTER_END));
+                vh.createTodoEndTime.setError(vh.getContext().getResources().getString(Constants.START_AFTER_END));
+                vh.createTodoDateStart.setError(vh.getContext().getResources().getString(Constants.START_AFTER_END));
+                vh.createTodoDateEnd.setError(vh.getContext().getResources().getString(Constants.START_AFTER_END));
                 return true;
             }else{
                 vh.createTodoStartTime.setError(null);

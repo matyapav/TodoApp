@@ -68,6 +68,7 @@ class SettingsController {
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        setAccountNameToCredentials(null);
                         Calendar calendar = Calendar.getInstance();
                         switch (which){
                             case 0:

@@ -33,6 +33,7 @@ public class CreateTodoActivity extends AppCompatActivity {
         if(currentDate != null){
             controller.prefillStartAndEndDate(currentDate);
         }
+        controller.autoFocusTodoTile();
         //set actions on date and time pickers
         controller.setListenersToDateAndTimePickers();
 
@@ -45,12 +46,13 @@ public class CreateTodoActivity extends AppCompatActivity {
         //set category spinner items
         controller.initCategorySpinner();
 
+        controller.setFabAction();
+
         //must be called after initialization of category spinner
         if(prefilledTodo != null){
             controller.fillTodoIntoView(prefilledTodo);
             setTitle(getResources().getString(R.string.edit_todo));
         }
-        controller.setFabAction();
     }
 
     @Override

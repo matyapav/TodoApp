@@ -34,6 +34,10 @@ public class CreateTodoController {
         this.editedTodo = editedTodo;
     }
 
+    void autoFocusTodoTile(){
+        vh.todoTitle.requestFocus();
+    }
+
     void initCategorySpinner() {
         vh.cathegorySpinner.setAdapter(new CategoryAdapter(context, Storage.getDummyCategories()));
     }

@@ -1,6 +1,7 @@
 package cz.matyapav.todoapp.settings;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -17,14 +18,11 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
-import java.io.UTFDataFormatException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.model.Todo;
@@ -41,6 +39,7 @@ import static cz.matyapav.todoapp.util.Constants.REQUEST_AUTHORIZATION;
  */
 public class MakeRequestTaskGet extends AsyncTask<Void, Void, List<TodoDay>> {
 
+    private SettingsFragment fragment;
     ProgressDialog mProgress;
     private com.google.api.services.calendar.Calendar mService = null;
     private Exception mLastError = null;
@@ -48,17 +47,16 @@ public class MakeRequestTaskGet extends AsyncTask<Void, Void, List<TodoDay>> {
     private Date endDate;
     private Activity context;
 
-    public MakeRequestTaskGet(Activity context, GoogleAccountCredential credential, Date startDate, Date endDate) {
+    public MakeRequestTaskGet(Activity context, SettingsFragment fragment, GoogleAccountCredential credential, Date startDate, Date endDate) {
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-        mService = new com.google.api.services.calendar.Calendar.Builder(
-                transport, jsonFactory, credential)
-                .build();
+        mService = new com.google.api.services.calendar.Calendar.Builder(transport, jsonFactory, credential).build();
         this.context = context;
         mProgress = new ProgressDialog(context);
         mProgress.setMessage(context.getString(R.string.fetching_data_calendar));
         this.startDate = startDate;
         this.endDate = endDate;
+        this.fragment = fragment;
     }
 
     /**
@@ -189,7 +187,7 @@ public class MakeRequestTaskGet extends AsyncTask<Void, Void, List<TodoDay>> {
                                 .getConnectionStatusCode());
             } else if (mLastError instanceof UserRecoverableAuthIOException) {
 
-                context.startActivityForResult(
+                fragment.startActivityForResult(
                         ((UserRecoverableAuthIOException) mLastError).getIntent(),
                         REQUEST_AUTHORIZATION);
             } else {

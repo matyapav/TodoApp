@@ -52,5 +52,9 @@
     <string name="install_play">This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.</string>
     <string name="fetching_data_calendar">Cooperating with Google Calendar API ...</string>
     <string name="todos_imported">todos imported</string>
+    <string name="select_time">Select time</string>
+    <string name="select_date">Select date</string>
+    <string name="validation_empty">This field cannot be empty.</string>
+    <string name="start_after_end">Start date and time cannot be same or after end date and time.</string>
 
 </resources>

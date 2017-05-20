@@ -67,11 +67,11 @@ public class CalendarApiController {
             Toast.makeText(context, R.string.connection_unavailable, Toast.LENGTH_LONG).show();
         } else {
             if (isGetRequest) {
-                new MakeRequestTaskGet(context, mCredential, startDate, endDate).execute();
+                new MakeRequestTaskGet(context, fragment, mCredential, startDate, endDate).execute();
             } else {
                 //TODO EXPORT
                 List<TodoDay> todoDays = new ArrayList<>();
-                new MakeRequestTaskSet(context, mCredential, todoDays).execute();
+                new MakeRequestTaskSet(context, fragment, mCredential, todoDays).execute();
             }
         }
     }
@@ -79,15 +79,7 @@ public class CalendarApiController {
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
         if (EasyPermissions.hasPermissions(context, Manifest.permission.GET_ACCOUNTS)) {
-            String accountName = context.getPreferences(Context.MODE_PRIVATE)
-                    .getString(Constants.PREF_ACCOUNT_NAME, null);
-            if (accountName != null) {
-                mCredential.setSelectedAccountName(accountName);
-                connectToAPI();
-            } else {
-                // Start a dialog from which the user can choose an account
                 fragment.startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
-            }
         } else {
             // Request the GET_ACCOUNTS permission via a user dialog
             EasyPermissions.requestPermissions(
@@ -95,6 +87,7 @@ public class CalendarApiController {
                     context.getString(R.string.google_account_access),
                     REQUEST_PERMISSION_GET_ACCOUNTS,
                     Manifest.permission.GET_ACCOUNTS);
+            connectToAPI();
         }
     }
 

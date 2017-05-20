@@ -57,5 +57,9 @@
     <string name="till_end_month">Odteď do konce měsíce</string>
     <string name="till_end_year">Odteď do konce roku</string>
     <string name="todos_imported">úkolů importováno</string>
+    <string name="select_date">Vyberte datum</string>
+    <string name="select_time">Vyberte čas</string>
+    <string name="start_after_end">Datum a čas začátku nemůže bý později než datum a čas konce.</string>
+    <string name="validation_empty">Toto pole je povinné.</string>
 
 </resources>

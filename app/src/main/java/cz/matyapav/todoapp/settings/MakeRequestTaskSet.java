@@ -1,12 +1,11 @@
 package cz.matyapav.todoapp.settings;
 
 import android.app.Activity;
-import android.app.Dialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
@@ -41,8 +40,9 @@ public class MakeRequestTaskSet extends AsyncTask<Void, Void, String> {
     private com.google.api.services.calendar.Calendar mService = null;
     private Exception mLastError = null;
     private List<TodoDay> todoDays;
+    private SettingsFragment fragment;
 
-    MakeRequestTaskSet(Activity context, GoogleAccountCredential credential, List<TodoDay> todoDays) {
+    MakeRequestTaskSet(Activity context, SettingsFragment fragment, GoogleAccountCredential credential, List<TodoDay> todoDays) {
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
         mService = new com.google.api.services.calendar.Calendar.Builder(transport, jsonFactory, credential).build();
@@ -50,6 +50,7 @@ public class MakeRequestTaskSet extends AsyncTask<Void, Void, String> {
         this.context = context;
         mProgress = new ProgressDialog(context);
         mProgress.setMessage(context.getResources().getString(R.string.fetching_data_calendar));
+        this.fragment = fragment;
     }
 
     /**
@@ -96,8 +97,6 @@ public class MakeRequestTaskSet extends AsyncTask<Void, Void, String> {
 
     }
 
-
-
     @Override
     protected void onPreExecute() {
         mProgress.show();
@@ -122,7 +121,7 @@ public class MakeRequestTaskSet extends AsyncTask<Void, Void, String> {
                         ((GooglePlayServicesAvailabilityIOException) mLastError)
                                 .getConnectionStatusCode());
             } else if (mLastError instanceof UserRecoverableAuthIOException) {
-                context.startActivityForResult(
+                fragment.startActivityForResult(
                         ((UserRecoverableAuthIOException) mLastError).getIntent(),
                         REQUEST_AUTHORIZATION);
             } else {

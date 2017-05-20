@@ -1,9 +1,7 @@
 package cz.matyapav.todoapp.settings;
 
 import android.accounts.AccountManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,7 +15,6 @@ import android.widget.Toast;
 import java.util.List;
 
 import cz.matyapav.todoapp.R;
-import cz.matyapav.todoapp.util.Constants;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.Activity.RESULT_OK;
@@ -60,15 +57,9 @@ public class SettingsFragment extends Fragment implements EasyPermissions.Permis
                 }
                 break;
             case REQUEST_ACCOUNT_PICKER:
-                if (resultCode == RESULT_OK && data != null &&
-                        data.getExtras() != null) {
-                    String accountName =
-                            data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                if (resultCode == RESULT_OK && data != null && data.getExtras() != null) {
+                    String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
-                        SharedPreferences settings = getActivity().getPreferences(Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putString(Constants.PREF_ACCOUNT_NAME, accountName);
-                        editor.apply();
                         controller.setAccountNameToCredentials(accountName);
                         controller.connectToApi();
                     }

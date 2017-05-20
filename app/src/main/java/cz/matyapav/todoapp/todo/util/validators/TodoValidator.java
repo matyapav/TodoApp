@@ -39,36 +39,12 @@ public class TodoValidator {
         return false;
     }
 
-    public boolean validateStartDateInPast(Date dateStart){
-        if(dateStart != null) {
-            if (Utils.getOnlyDate(Calendar.getInstance().getTime()).compareTo(dateStart) > 0) {
-                vh.createTodoDateStart.setError(Constants.DATE_IN_PAST);
-                return true;
-            } else {
-                vh.createTodoDateStart.setError(null);
-            }
-        }
-        return false;
-    }
-
     public boolean validateEndDateEmpty(String dateEndStr){
         if(dateEndStr.isEmpty()){
             vh.createTodoDateEnd.setError(Constants.VALIDATION_REQUIRED);
             return true;
         }else{
             vh.createTodoDateEnd.setError(null);
-        }
-        return false;
-    }
-
-    public boolean validateEndDateInPast(Date dateEnd){
-        if(dateEnd != null) {
-            if (Utils.getOnlyDate(Calendar.getInstance().getTime()).compareTo(dateEnd) > 0) {
-                vh.createTodoDateEnd.setError(Constants.DATE_IN_PAST);
-                return true;
-            } else {
-                vh.createTodoDateEnd.setError(null);
-            }
         }
         return false;
     }

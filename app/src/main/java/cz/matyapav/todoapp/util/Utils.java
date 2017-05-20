@@ -3,6 +3,8 @@ package cz.matyapav.todoapp.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.widget.Spinner;
@@ -117,5 +119,17 @@ public class Utils {
             default:
                 return null;
         }
+    }
+
+    /**
+     * Checks whether the device currently has a network connection.
+     *
+     * @return true if the device has a network connection, false otherwise.
+     */
+    public static boolean isDeviceOnline(Activity context) {
+        ConnectivityManager connMgr =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 }

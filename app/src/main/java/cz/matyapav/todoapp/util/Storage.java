@@ -11,6 +11,9 @@ import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +78,8 @@ public class Storage {
         return getTodoDayByDate(calendar.getTime(), context);
     }
 
-    public static boolean addNewTodo(Todo newTodo, Context context) {
+    public static boolean addNewTodo(Todo newTodo, Activity context) {
+        newTodo.setId(Storage.getUniqueTodoId(context));
         Date startDate = newTodo.getDateAndTimeStart();
         Date endDate = newTodo.getDateAndTimeEnd();
         String startDateStr = Utils.dateFormatter.format(startDate);
@@ -84,6 +88,7 @@ public class Storage {
             TodoDay day = getTodoDayByDate(startDate, context);
             if (day != null) {
                 day.addTodo(newTodo);
+                Storage.sortTodosByTime(day);
                 todoDaysList.put(startDateStr, day);
                 return true;
             }
@@ -97,6 +102,7 @@ public class Storage {
             TodoDay dayStart = getTodoDayByDate(startDate, context);
             newTodo.setDateAndTimeEnd(c.getTime());
             dayStart.addTodo(newTodo);
+            Storage.sortTodosByTime(dayStart);
             todoDaysList.put(Utils.dateFormatter.format(startDate), dayStart);
             c.add(Calendar.MINUTE, 1);
             while(!Utils.dateFormatter.format(c.getTime()).equals(endDateStr)){
@@ -108,6 +114,7 @@ public class Storage {
                     c.set(Calendar.MINUTE, 59);
                     todoMiddle.setDateAndTimeEnd(c.getTime());
                     dayMiddle.addTodo(todoMiddle);
+                    Storage.sortTodosByTime(dayMiddle);
                     todoDaysList.put(Utils.dateFormatter.format(c.getTime()), dayMiddle);
                     c.add(Calendar.MINUTE, 1);
                 } catch (CloneNotSupportedException e) {
@@ -123,6 +130,7 @@ public class Storage {
                 TodoDay dayEnd = getTodoDayByDate(c.getTime(), context);
                 todoDaysList.put(Utils.dateFormatter.format(endDate), dayEnd);
                 dayEnd.addTodo(end);
+                Storage.sortTodosByTime(dayEnd);
                 return true;
             } catch (CloneNotSupportedException e) {
                 System.err.println("Todo "+newTodo.getTitle()+ " cannot be cloned.");
@@ -153,16 +161,15 @@ public class Storage {
         return uniqueId;
     }
 
-    public static boolean editTodo(int id, Todo todo) {
+    public static boolean editTodo(int id, Todo todo, Context context) {
         Todo edited = getTodoByDateAndId(todo.getDateAndTimeStart(), id);
         if(edited != null) {
             edited.setTitle(todo.getTitle());
-            edited.setDateAndTimeStart(todo.getDateAndTimeStart());
-            edited.setDateAndTimeEnd(todo.getDateAndTimeEnd());
             edited.setNotification(todo.isNotification());
             edited.setCathegory(todo.getCathegory());
             edited.setPriority(todo.getPriority());
             edited.setDescription(todo.getDescription());
+            Storage.sortTodosByTime(getTodoDayByDate(edited.getDateAndTimeStart(), context));
             return true;
         }
         return false;
@@ -180,4 +187,12 @@ public class Storage {
     }
 
 
+    public static void sortTodosByTime(TodoDay day) {
+        Collections.sort(day.getTodos(), new Comparator<Todo>() {
+            @Override
+            public int compare(Todo lhs, Todo rhs) {
+                return lhs.getDateAndTimeStart().compareTo(rhs.getDateAndTimeStart());
+            }
+        });
+    }
 }

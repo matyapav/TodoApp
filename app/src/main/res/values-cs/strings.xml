@@ -45,5 +45,17 @@
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
     <string name="show_completed">Zobrazovat dokončené</string>
+    <string name="all">Vše</string>
+    <string name="connection_unavailable">Bez přístupu k internetu.</string>
+    <string name="error_occurred">Nastala následující chyba:</string>
+    <string name="fetching_data_calendar">Splupracuji s Google Calendar API ...</string>
+    <string name="google_account_access">Aplikace potřebuje přístup k Google úštu (skrz kontakty)</string>
+    <string name="install_play">Tato aplikace potřebuje Služby Google Play. Prosíme, nainstalujte si Služby Google Play na své zařízení a restartujte aplikaci.</string>
+    <string name="no_result_returned">V tomto období nenalezeny žádné události.</string>
+    <string name="request_cancelled">Požadavek zrušen.</string>
+    <string name="select_options">Vyberte jednu z možností</string>
+    <string name="till_end_month">Odteď do konce měsíce</string>
+    <string name="till_end_year">Odteď do konce roku</string>
+    <string name="todos_imported">úkolů importováno</string>
 
 </resources>

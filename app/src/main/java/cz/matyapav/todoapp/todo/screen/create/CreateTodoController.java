@@ -87,10 +87,8 @@ public class CreateTodoController {
 
         errors = validator.validateTitle(todoName) |
                 validator.validateStartDateEmpty(dateStartStr) |
-                validator.validateStartDateInPast(dateStart) |
-                validator.validateEndDateEmpty(dateEndStr) |
-                validator.validateEndDateInPast(dateEnd) |
                 validator.validateStartTimeEmpty(startTime) |
+                validator.validateEndDateEmpty(dateEndStr) |
                 validator.validateEndTimeEmpty(endTime) |
                 validator.validateEndTimeBeforeStartTime(dateStart, dateEnd);
 
@@ -103,9 +101,6 @@ public class CreateTodoController {
             todo.setCathegory(cathegory);
             todo.setNotification(vh.notification.isChecked());
             todo.setDescription(vh.description.getText().toString());
-            if(editedTodo == null){
-                todo.setId(Storage.getUniqueTodoId(context));
-            }
             saveTodo(todo);
         }
     }
@@ -115,7 +110,7 @@ public class CreateTodoController {
         if(editedTodo == null) {
             successfullySaved = Storage.addNewTodo(todo, context);
         }else{
-            successfullySaved = Storage.editTodo(editedTodo.getId(), todo);
+            successfullySaved = Storage.editTodo(editedTodo.getId(), todo, context);
         }
         if(successfullySaved) {
             Storage.updateTodosInSharedPreferences(context);
@@ -225,10 +220,15 @@ public class CreateTodoController {
         calendar.setTime(todo.getDateAndTimeStart());
         vh.createTodoDateStart.setText(Utils.dateFormatter.format(calendar.getTime()));
         vh.createTodoStartTime.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
+        //Todo zvazit jestli chceme disablovat
+        vh.createTodoDateStart.setEnabled(false);
+        vh.createTodoDateEnd.setEnabled(false);
         calendar.setTime(todo.getDateAndTimeEnd());
         vh.createTodoDateEnd.setText(Utils.dateFormatter.format(calendar.getTime()));
         vh.createTodoEndTime.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
-        vh.cathegorySpinner.setSelection(Utils.getValueSpinnerPosition(vh.cathegorySpinner, todo.getCathegory().getCathegoryName()));
+        if(todo.getCathegory() != null) {
+            vh.cathegorySpinner.setSelection(Utils.getValueSpinnerPosition(vh.cathegorySpinner, todo.getCathegory().getCathegoryName()));
+        }
         vh.notification.setChecked(todo.isNotification());
         vh.description.setText(todo.getDescription());
     }

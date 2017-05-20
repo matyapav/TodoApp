@@ -101,7 +101,9 @@ public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObje
         String end = String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
         viewHolder.todoTime.setText(start + " - " + end);
         viewHolder.todoTitle.setText(todo.getTitle());
-        viewHolder.todoIcon.setImageResource(todo.getCathegory().getImgResourceId());
+        if(todo.getCathegory() != null) {
+            viewHolder.todoIcon.setImageResource(todo.getCathegory().getImgResourceId());
+        }
         final int color = todo.getPriority().getColorId();
         GradientDrawable iconBg = (GradientDrawable) viewHolder.todoIcon.getBackground().mutate();
         iconBg.setColor(Utils.getColor(context, color));

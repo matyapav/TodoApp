@@ -34,4 +34,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="show_completed">Show completed</string>
+    <string name="google_account_access">This app needs to access your Google account (via Contacts).</string>
+    <string name="connection_unavailable">No network connection available.</string>
+    <string name="error_occurred">The following error occurred:</string>
 </resources>

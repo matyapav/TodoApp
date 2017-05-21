@@ -20,6 +20,7 @@ import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.model.Cathegory;
 import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.todo.model.TodoDay;
+import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
 
 /**
  * Storage layer - keeps all data in application and sets/gets them into/from SharedPreferences
@@ -27,7 +28,7 @@ import cz.matyapav.todoapp.todo.model.TodoDay;
 public class Storage {
 
     private static List<Cathegory> cathegories;
-    private static HashMap<String, TodoDay> todoDaysList;
+    private static HashMap<String, TodoDay> todoDays;
 
     /**
      * Gets dummy categories
@@ -49,21 +50,34 @@ public class Storage {
      * @param context
      * @return
      */
-    public static HashMap<String, TodoDay> getTodoDays(Context context) {
-        if(todoDaysList == null){
+    public static HashMap<String, TodoDay> getTodoDays(Activity context) {
+        if(todoDays == null){
             //load from shared preferences
             SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_FILE_KEY, 0); //private mode;
             String serializedTodos = preferences.getString(Constants.TODOS, null); //if not found then null
             if(serializedTodos == null){
                 //no todos yet, create new map
-                todoDaysList = new HashMap<>();
+                todoDays = new HashMap<>();
+                //easter egg
+                Calendar calendar = Calendar.getInstance();
+                TodoDay day = new TodoDay(calendar.getTime());
+                Todo todo = new Todo();
+                todo.setTitle("Kill all Jedi");
+                todo.setPriority(TodoPriority.HIGH);
+                todo.setDateAndTimeStart(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                todo.setDateAndTimeEnd(calendar.getTime());
+                todo.setCathegory(getDummyCategories().get(1));
+                todo.setDescription("Younglings in the Jedi temple as well. LOL.");
+                todo.setNotification(true);
+                Storage.addNewTodo(todo, context);
             }else{
                 Gson gson = new Gson();
                 Type type = new TypeToken<HashMap<String, TodoDay>>(){}.getType();
-                todoDaysList = gson.fromJson(serializedTodos, type);
+                todoDays = gson.fromJson(serializedTodos, type);
             }
         }
-        return todoDaysList;
+        return todoDays;
     }
 
     /**
@@ -72,12 +86,12 @@ public class Storage {
      * @param context
      * @return corresponding tododay
      */
-    public static TodoDay getTodoDayByDate(Date date, Context context){
+    public static TodoDay getTodoDayByDate(Date date, Activity context){
         String dateStr = Utils.dateFormatter.format(date);
         TodoDay day = getTodoDays(context).get(dateStr);
         if(day == null){
             day = new TodoDay(date);
-            todoDaysList.put(dateStr, day);
+            todoDays.put(dateStr, day);
         }
         return day;
     }
@@ -87,7 +101,7 @@ public class Storage {
      * @param context
      * @return corrensponding tododay
      */
-    public static TodoDay getCurrentTodoDay(Context context){
+    public static TodoDay getCurrentTodoDay(Activity context){
         Calendar calendar = Calendar.getInstance();
         return getTodoDayByDate(calendar.getTime(), context);
     }
@@ -109,7 +123,7 @@ public class Storage {
             if (day != null) {
                 day.addTodo(newTodo);
                 Storage.sortTodosByTime(day);
-                todoDaysList.put(startDateStr, day);
+                todoDays.put(startDateStr, day);
                 return true;
             }
         }else{
@@ -126,7 +140,7 @@ public class Storage {
             newTodo.setDateAndTimeEnd(c.getTime());
             dayStart.addTodo(newTodo);
             Storage.sortTodosByTime(dayStart);
-            todoDaysList.put(Utils.dateFormatter.format(startDate), dayStart);
+            todoDays.put(Utils.dateFormatter.format(startDate), dayStart);
             c.add(Calendar.MINUTE, 1);
             while(!Utils.dateFormatter.format(c.getTime()).equals(endDateStr)){
                 TodoDay dayMiddle = getTodoDayByDate(c.getTime(), context);
@@ -138,7 +152,7 @@ public class Storage {
                     todoMiddle.setDateAndTimeEnd(c.getTime());
                     dayMiddle.addTodo(todoMiddle);
                     Storage.sortTodosByTime(dayMiddle);
-                    todoDaysList.put(Utils.dateFormatter.format(c.getTime()), dayMiddle);
+                    todoDays.put(Utils.dateFormatter.format(c.getTime()), dayMiddle);
                     c.add(Calendar.MINUTE, 1);
                 } catch (CloneNotSupportedException e) {
                     System.err.println("Todo "+newTodo.getTitle()+ " cannot be cloned.");
@@ -151,7 +165,7 @@ public class Storage {
                 end.setDateAndTimeStart(c.getTime());
                 end.setDateAndTimeEnd(endDate);
                 TodoDay dayEnd = getTodoDayByDate(c.getTime(), context);
-                todoDaysList.put(Utils.dateFormatter.format(endDate), dayEnd);
+                todoDays.put(Utils.dateFormatter.format(endDate), dayEnd);
                 dayEnd.addTodo(end);
                 Storage.sortTodosByTime(dayEnd);
                 return true;
@@ -168,7 +182,7 @@ public class Storage {
      * Updates tudu map in shared preferences
      * @param context
      */
-    public static void updateTodosInSharedPreferences(Context context){
+    public static void updateTodosInSharedPreferences(Activity context){
         SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_FILE_KEY, 0); //open in private mode
         SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
@@ -200,7 +214,7 @@ public class Storage {
      * @param context
      * @return true if successfully edited, false otherwise
      */
-    public static boolean editTodo(int id, Todo todo, Context context) {
+    public static boolean editTodo(int id, Todo todo, Activity context) {
         Todo edited = getTodoByDateAndId(todo.getDateAndTimeStart(), id);
         if(edited != null) {
             edited.setTitle(todo.getTitle());
@@ -222,7 +236,7 @@ public class Storage {
      */
     private static Todo getTodoByDateAndId(Date date, int id) {
         String dateStr = Utils.dateFormatter.format(date);
-        TodoDay day = todoDaysList.get(dateStr);
+        TodoDay day = todoDays.get(dateStr);
         for (Todo todo : day.getTodos()) {
             if(todo.getId() == id){
                 return todo;

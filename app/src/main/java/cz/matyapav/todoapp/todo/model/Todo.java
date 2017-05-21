@@ -1,14 +1,12 @@
 package cz.matyapav.todoapp.todo.model;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
 import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Tudu class
  */
 public class Todo implements Serializable, Cloneable{
 
@@ -25,7 +23,7 @@ public class Todo implements Serializable, Cloneable{
     private boolean multipleDays;
 
     public Todo() {
-        //ma byt prazdny
+        //should be empty
     }
 
     public Todo(

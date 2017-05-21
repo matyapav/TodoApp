@@ -11,8 +11,7 @@ import android.view.View;
 import cz.matyapav.todoapp.R;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Decoration for Recycler view items
  */
 public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;

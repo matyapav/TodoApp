@@ -19,8 +19,7 @@ import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
 import cz.matyapav.todoapp.util.Utils;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Calendar adapter - used for creating custom calendar view
  */
 public class CalendarAdapter extends ArrayAdapter<TodoDay> {
 

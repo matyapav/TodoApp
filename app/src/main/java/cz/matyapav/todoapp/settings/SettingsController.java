@@ -20,6 +20,9 @@ import cz.matyapav.todoapp.util.Utils;
  * @since 1.0.0..
  */
 
+/**
+ * Controls SettingsFragment
+ */
 class SettingsController {
 
     FragmentActivity context;
@@ -33,6 +36,9 @@ class SettingsController {
         this.apiController = new CalendarApiController(context, fragment);
     }
 
+    /**
+     * Prepares button for language selection
+     */
     public void initLanguageSelection(){
         vh.language.setText(Locale.getDefault().getDisplayLanguage());
         vh.languageSetting.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +59,9 @@ class SettingsController {
         });
     }
 
+    /**
+     * Prepares button for data import
+     */
     public void initImportDataSetting(){
 
         vh.importDataSetting.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +109,10 @@ class SettingsController {
         });
     }
 
+    /**
+     * Selects language on specified index.
+     * @param index
+     */
     private void selectLanguage(int index) {
         vh.language.setText(SupportedLanguages.values()[index].getLangName());
         String lang = SupportedLanguages.values()[index].getLangAbbreviation();
@@ -116,10 +129,17 @@ class SettingsController {
     }
 
 
+    /**
+     * Connects to Google Calendar API
+     */
     public void connectToApi(){
         apiController.connectToAPI();
     }
 
+    /**
+     * Sets account name into credentials used by Google Calendar API
+     * @param accountName
+     */
     public void setAccountNameToCredentials(String accountName){
         apiController.mCredential.setSelectedAccountName(accountName);
     }

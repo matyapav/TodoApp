@@ -12,8 +12,10 @@ import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.util.Constants;
 
+/**
+ * Activity for creating tudu
+ */
 public class CreateTodoActivity extends AppCompatActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

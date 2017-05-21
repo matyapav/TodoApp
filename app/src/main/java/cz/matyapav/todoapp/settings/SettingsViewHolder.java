@@ -12,6 +12,9 @@ import cz.matyapav.todoapp.ViewHolder;
  * @since 1.0.0..
  */
 
+/**
+ * Holder for views connected with SettingFragment
+ */
 class SettingsViewHolder extends ViewHolder{
 
     RelativeLayout languageSetting;

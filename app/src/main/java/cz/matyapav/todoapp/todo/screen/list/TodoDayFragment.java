@@ -19,8 +19,7 @@ import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.util.Constants;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Tododay fragment - displays todos of specified date
  */
 public class TodoDayFragment extends Fragment {
 

@@ -14,8 +14,7 @@ import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.model.Cathegory;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * CategoryAdapter - used to create Spinner with category items
  */
 public class CategoryAdapter extends ArrayAdapter<Cathegory> {
 

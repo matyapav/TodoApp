@@ -1,7 +1,6 @@
 package cz.matyapav.todoapp.settings;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;

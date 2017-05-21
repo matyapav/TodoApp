@@ -3,14 +3,12 @@ package cz.matyapav.todoapp.todo.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * TodoDay class - collects Todos with the same date
  */
 public class TodoDay implements Serializable {
 

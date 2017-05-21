@@ -13,6 +13,9 @@ import static cz.matyapav.todoapp.util.Constants.REQUEST_GOOGLE_PLAY_SERVICES;
  * @since 1.0.0..
  */
 
+/**
+ * Static class with methods for connecting with google play services
+ */
 public class GooglePlayServicesConnector {
 
     /**

@@ -20,8 +20,7 @@ import cz.matyapav.todoapp.todo.screen.list.TodoDayViewHolder;
 import cz.matyapav.todoapp.util.Constants;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Todoall fragment - displays monthly view of todos in calendar
  */
 public class TodoAllFragment extends Fragment {
     TodoAllController controller;

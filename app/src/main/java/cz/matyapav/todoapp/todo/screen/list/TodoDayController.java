@@ -26,15 +26,14 @@ import cz.matyapav.todoapp.util.Storage;
 import cz.matyapav.todoapp.util.Utils;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Controls TodoDay fragments
  */
 public class TodoDayController implements AdapterObserver {
 
-    Activity context;
-    TodoDayViewHolder vh;
-    TodoDay currentDay;
-    Fragment fragment;
+    private Activity context;
+    private TodoDayViewHolder vh;
+    private TodoDay currentDay;
+    private Fragment fragment;
 
     public TodoDayController(Activity context, TodoDayViewHolder vh, Fragment fragment) {
         this.context = context;
@@ -43,6 +42,9 @@ public class TodoDayController implements AdapterObserver {
         this.fragment = fragment;
     }
 
+    /**
+     * Sets action on floating action button
+     */
     void setFabAction(){
         vh.newTodoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +56,10 @@ public class TodoDayController implements AdapterObserver {
         });
     }
 
+    /**
+     * Initializes date picker dialog on tododay date view
+     * @param chosenDate
+     */
     private void initTodoDayDatePickerDialog(final Date chosenDate){
         vh.dayWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +81,9 @@ public class TodoDayController implements AdapterObserver {
     }
 
 
+    /**
+     * Initializes tododay recycler view
+     */
     void initTodoListAdapter(){
         vh.listView.setHasFixedSize(true);
         vh.listView.setLayoutManager(new LinearLayoutManager(context));
@@ -83,6 +92,10 @@ public class TodoDayController implements AdapterObserver {
     }
 
 
+    /**
+     * Sets current displayed date
+     * @param currentDate
+     */
     void setDay(Date currentDate){
         Calendar calendar = Calendar.getInstance();
         if(currentDate != null) {
@@ -101,6 +114,9 @@ public class TodoDayController implements AdapterObserver {
         initTodoDayDatePickerDialog(calendar.getTime());
     }
 
+    /**
+     * Sets status of todos (number of completed, uncompleted)
+     */
     void setTodoStatus(){
         if(currentDay != null) {
             int numberOfCompletedTodos = currentDay.getNumberOfCompletedTodos();
@@ -109,7 +125,10 @@ public class TodoDayController implements AdapterObserver {
         }
     }
 
-    public void notifyAdapterDataChanged(){
+    /**
+     * Notifies adapter that data in it were changed externally
+     */
+    void notifyAdapterDataChanged(){
         TodoDayAdapter adapter = (TodoDayAdapter) vh.listView.getAdapter();
         adapter.changeDataSet();
     }
@@ -120,7 +139,10 @@ public class TodoDayController implements AdapterObserver {
         Storage.updateTodosInSharedPreferences(context);
     }
 
-    public void toggleCompletedTodoVisibility(){
+    /**
+     * Toggles visibility of completed todos
+     */
+    void toggleCompletedTodoVisibility(){
         SharedPreferences sharedPref = context.getSharedPreferences(Constants.PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         boolean showCompleted = sharedPref.getBoolean(Constants.PREFS_SHOW_COMPLETED, true);

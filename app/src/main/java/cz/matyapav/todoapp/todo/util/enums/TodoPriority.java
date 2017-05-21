@@ -5,8 +5,7 @@ import java.io.Serializable;
 import cz.matyapav.todoapp.R;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Enumeration for priorities
  */
 public enum TodoPriority implements Serializable{
 

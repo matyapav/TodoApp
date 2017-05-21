@@ -2,7 +2,6 @@ package cz.matyapav.todoapp.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -11,28 +10,27 @@ import android.widget.Spinner;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.StringTokenizer;
 
-import cz.matyapav.todoapp.R;
-import cz.matyapav.todoapp.todo.model.TodoDay;
 import cz.matyapav.todoapp.todo.util.enums.SupportedLanguages;
-import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
-import cz.matyapav.todoapp.todo.model.Cathegory;
-import cz.matyapav.todoapp.todo.model.Todo;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Util methods used in applicaiton
  */
 public class Utils {
 
+    /**
+     * Date formatter - formats date in dd.MM.yyyy format
+     */
     public static SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 
+    /**
+     * Gets color by its id
+     * @param context
+     * @param id
+     * @return corresponding color
+     */
     public static int getColor(Context context, int id) {
         final int version = Build.VERSION.SDK_INT;
         if (version >= 23) {
@@ -42,6 +40,11 @@ public class Utils {
         }
     }
 
+    /**
+     * Parses date from string in dd.MM.yyyy format
+     * @param dateString
+     * @return parsed Date or null if it cannot be parsed from given string
+     */
     public static Date parseDate(String dateString){
         try {
             return dateFormatter.parse(dateString);
@@ -52,6 +55,12 @@ public class Utils {
         return null;
     }
 
+    /**
+     * Gets position of given value in specified spinner
+     * @param spinner
+     * @param value
+     * @return position of given value in spinner
+     */
     public static int getValueSpinnerPosition(Spinner spinner, String value) {
         int index = 0;
         for (int i=0;i<spinner.getCount();i++){
@@ -63,22 +72,22 @@ public class Utils {
         return index;
     }
 
+    /**
+     * Parses hours from time string (expects time in HH:MM format)
+     * @param time
+     * @return hours as integer
+     */
     public static int parseHourFromString(String time){
         return Integer.parseInt(time.substring(0,2));
     }
 
+    /**
+     * Parses minutes from time string (expects time in HH:MM format)
+     * @param time
+     * @return minutes as integer
+     */
     public static int parseMinutesFromString(String time){
         return Integer.parseInt(time.substring(3,5));
-    }
-
-    public static Date getOnlyDate(Date date){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTime();
     }
 
     public static String[] getSupportedLanguagesAsArray(){
@@ -90,6 +99,11 @@ public class Utils {
         return result;
     }
 
+    /**
+     * Gets name of month for Czech localization
+     * @param month
+     * @return Month name in Czech language
+     */
     public static String getMonthStandaloneName(int month) {
         switch (month+1){
             case 1:

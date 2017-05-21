@@ -8,34 +8,32 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.todo.model.Cathegory;
 import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.todo.model.TodoDay;
-import cz.matyapav.todoapp.todo.util.enums.TodoPriority;
-
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Storage layer - keeps all data in application and sets/gets them into/from SharedPreferences
  */
 public class Storage {
 
     private static List<Cathegory> cathegories;
     private static HashMap<String, TodoDay> todoDaysList;
 
+    /**
+     * Gets dummy categories
+     * TODO when category management is implemented remove this method
+     * @return
+     */
     public static List<Cathegory> getDummyCategories(){
         if(cathegories == null){
             cathegories = new ArrayList<>();
@@ -46,7 +44,12 @@ public class Storage {
         return cathegories;
     }
 
-    public static HashMap<String, TodoDay> getTodoDaysList(Context context) {
+    /**
+     * Gets tododays map from SharedPreferences
+     * @param context
+     * @return
+     */
+    public static HashMap<String, TodoDay> getTodoDays(Context context) {
         if(todoDaysList == null){
             //load from shared preferences
             SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_FILE_KEY, 0); //private mode;
@@ -63,9 +66,15 @@ public class Storage {
         return todoDaysList;
     }
 
+    /**
+     * Gets tododay by specified date
+     * @param date
+     * @param context
+     * @return corresponding tododay
+     */
     public static TodoDay getTodoDayByDate(Date date, Context context){
         String dateStr = Utils.dateFormatter.format(date);
-        TodoDay day = getTodoDaysList(context).get(dateStr);
+        TodoDay day = getTodoDays(context).get(dateStr);
         if(day == null){
             day = new TodoDay(date);
             todoDaysList.put(dateStr, day);
@@ -73,11 +82,22 @@ public class Storage {
         return day;
     }
 
+    /**
+     * Gets tododay of current day
+     * @param context
+     * @return corrensponding tododay
+     */
     public static TodoDay getCurrentTodoDay(Context context){
         Calendar calendar = Calendar.getInstance();
         return getTodoDayByDate(calendar.getTime(), context);
     }
 
+    /**
+     * Adds new tudu into map
+     * @param newTodo
+     * @param context
+     * @return true if saved successfully, false if errors occurred
+     */
     public static boolean addNewTodo(Todo newTodo, Activity context) {
         newTodo.setId(Storage.getUniqueTodoId(context));
         Date startDate = newTodo.getDateAndTimeStart();
@@ -93,7 +113,10 @@ public class Storage {
                 return true;
             }
         }else{
-            //task na vice dni
+            //multiday task
+            /*TODO idea of this application does not support multiday task but we want to give
+            user an opportunity to make multiday tasks. So taks divided into multiple tasks
+             which are saved in multiple days and are NO MORE RELATED to each other*/
             newTodo.setMultipleDays(true);
             Calendar c = Calendar.getInstance();
             c.setTime(startDate);
@@ -141,17 +164,26 @@ public class Storage {
         return false;
     }
 
+    /**
+     * Updates tudu map in shared preferences
+     * @param context
+     */
     public static void updateTodosInSharedPreferences(Context context){
         SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_FILE_KEY, 0); //open in private mode
         SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
-        String tododays  = gson.toJson(getTodoDaysList(context));
+        String tododays  = gson.toJson(getTodoDays(context));
         editor.putString(Constants.TODOS, tododays);
         editor.apply();
     }
 
 
-    //TODO zbavit se toho az bude db
+    /**
+     * Gets tudu unique id from sharedpreferences - something like autoincrement
+     * TODO get rid of it when we migrate from shared prefs to real database
+     * @param activity
+     * @return
+     */
     public static int getUniqueTodoId(Activity activity){
         SharedPreferences preferences = activity.getSharedPreferences(Constants.PREFERENCE_FILE_KEY, 0);
         SharedPreferences.Editor editor = preferences.edit();
@@ -161,6 +193,13 @@ public class Storage {
         return uniqueId;
     }
 
+    /**
+     * Edits tudu
+     * @param id
+     * @param todo
+     * @param context
+     * @return true if successfully edited, false otherwise
+     */
     public static boolean editTodo(int id, Todo todo, Context context) {
         Todo edited = getTodoByDateAndId(todo.getDateAndTimeStart(), id);
         if(edited != null) {
@@ -175,6 +214,12 @@ public class Storage {
         return false;
     }
 
+    /**
+     * Gets tudu by date and id
+     * @param date
+     * @param id
+     * @return corresponding tudu
+     */
     private static Todo getTodoByDateAndId(Date date, int id) {
         String dateStr = Utils.dateFormatter.format(date);
         TodoDay day = todoDaysList.get(dateStr);
@@ -186,8 +231,11 @@ public class Storage {
         return null;
     }
 
-
-    public static void sortTodosByTime(TodoDay day) {
+    /**
+     * Sorts tudus in specified date by their dates and times in ascending order
+     * @param day
+     */
+    private static void sortTodosByTime(TodoDay day) {
         Collections.sort(day.getTodos(), new Comparator<Todo>() {
             @Override
             public int compare(Todo lhs, Todo rhs) {

@@ -28,10 +28,8 @@ import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.Storage;
 import cz.matyapav.todoapp.util.Utils;
 
-
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Tododay adapter - used when creating recycler view for displaying todos
  */
 public class TodoDayAdapter extends RecyclerSwipeAdapter<TodoDayAdapter.DataObjectHolder> {
 

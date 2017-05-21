@@ -1,7 +1,6 @@
 package cz.matyapav.todoapp.settings;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -34,8 +33,8 @@ import cz.matyapav.todoapp.util.Utils;
 import static cz.matyapav.todoapp.util.Constants.REQUEST_AUTHORIZATION;
 
 /**
- * Asynchronní task pro handlování calendar API
- * Získání dat z kalendáře
+ * Asynchronous task for handling Calendar API request.
+ * Used for importing events from Google Calendar
  */
 public class MakeRequestTaskGet extends AsyncTask<Void, Void, List<TodoDay>> {
 
@@ -76,7 +75,7 @@ public class MakeRequestTaskGet extends AsyncTask<Void, Void, List<TodoDay>> {
     }
 
     /**
-     * Získání dat z calendar API
+     * Gets events from Calendar API
      */
     private List<TodoDay> getDataFromApi() throws IOException {
         Events events;
@@ -132,7 +131,7 @@ public class MakeRequestTaskGet extends AsyncTask<Void, Void, List<TodoDay>> {
     }
 
     /**
-     * Přemapování calendar Event do TUDU
+     * Maps calendar event to our Tudu
      */
     private Todo remapEventToTodo(Event event) {
         Todo todo = new Todo();
@@ -155,11 +154,18 @@ public class MakeRequestTaskGet extends AsyncTask<Void, Void, List<TodoDay>> {
 
     }
 
+    /**
+     * Runs before task - shows progress dialog
+     */
     @Override
     protected void onPreExecute() {
         mProgress.show();
     }
 
+    /**
+     * Runs after task - hides progress dialog and processes data
+     * @param output
+     */
     @Override
     protected void onPostExecute(List<TodoDay> output) {
         mProgress.hide();
@@ -177,6 +183,9 @@ public class MakeRequestTaskGet extends AsyncTask<Void, Void, List<TodoDay>> {
         }
     }
 
+    /**
+     * Runs if task was canceled during its processing
+     */
     @Override
     protected void onCancelled() {
         mProgress.hide();

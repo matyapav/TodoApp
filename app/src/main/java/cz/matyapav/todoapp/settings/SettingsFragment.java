@@ -23,8 +23,7 @@ import static cz.matyapav.todoapp.util.Constants.REQUEST_AUTHORIZATION;
 import static cz.matyapav.todoapp.util.Constants.REQUEST_GOOGLE_PLAY_SERVICES;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Settings Fragment
  */
 public class SettingsFragment extends Fragment implements EasyPermissions.PermissionCallbacks {
 
@@ -82,11 +81,11 @@ public class SettingsFragment extends Fragment implements EasyPermissions.Permis
 
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
-        //do nothing
+        //do nothing but must be implemented
     }
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-        //do nothing
+        //do nothing but must be implemented
     }
 }

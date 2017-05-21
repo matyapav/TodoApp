@@ -3,8 +3,7 @@ package cz.matyapav.todoapp.todo.model;
 import java.io.Serializable;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Category class
  */
 public class Cathegory implements Serializable{
 
@@ -13,7 +12,7 @@ public class Cathegory implements Serializable{
     private String description;
 
     public Cathegory(){
-
+        //should be empty
     }
 
     public Cathegory(String cathegoryName, String description, int imageResourceId) {
@@ -48,7 +47,7 @@ public class Cathegory implements Serializable{
 
     @Override
     public String toString() {
-        //dulezite taha se podle toho pozice kategorie ve spinneru
+        //important! do not override.. used for getting position in spinner
         return cathegoryName;
     }
 }

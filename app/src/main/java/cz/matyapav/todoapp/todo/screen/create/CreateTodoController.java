@@ -19,8 +19,7 @@ import cz.matyapav.todoapp.util.Storage;
 import cz.matyapav.todoapp.util.Utils;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Controls CreateTodo activity
  */
 public class CreateTodoController {
 
@@ -34,14 +33,23 @@ public class CreateTodoController {
         this.editedTodo = editedTodo;
     }
 
+    /**
+     * Requests focus on tudu title
+     */
     void autoFocusTodoTile(){
         vh.todoTitle.requestFocus();
     }
 
+    /**
+     * Initializes category spinner
+     */
     void initCategorySpinner() {
         vh.cathegorySpinner.setAdapter(new CategoryAdapter(context, Storage.getDummyCategories()));
     }
 
+    /**
+     * Sets action on floating action button
+     */
     void setFabAction() {
         vh.finishFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,12 +59,15 @@ public class CreateTodoController {
         });
     }
 
+    /**
+     * Creates tudu - gets data from view, validates them and save tudu in Storage
+     * (or display errors if validation failed)
+     */
     void createTodo(){
-        //TODO zpracuj data a uloz
         //todoName
         Todo todo = new Todo();
         TodoValidator validator = new TodoValidator(vh);
-        boolean errors = false;
+        boolean errors;
 
         String todoName = vh.todoTitle.getText().toString();
         String dateStartStr = vh.createTodoDateStart.getText().toString();
@@ -109,6 +120,10 @@ public class CreateTodoController {
         }
     }
 
+    /**
+     * Saved tudu into Storage
+     * @param todo
+     */
     void saveTodo(Todo todo){
         boolean successfullySaved = false;
         if(editedTodo == null) {
@@ -123,6 +138,9 @@ public class CreateTodoController {
         context.finish();
     }
 
+    /**
+     * Sets onclick listeners on priority buttons
+     */
     void setListenersToPriorityButtons() {
         vh.lowPrioWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +168,9 @@ public class CreateTodoController {
         });
     }
 
+    /**
+     * Initializes onclick listeners to date and time pickers
+     */
     void setListenersToDateAndTimePickers() {
         vh.createTodoDateStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,12 +198,19 @@ public class CreateTodoController {
         });
     }
 
+    /**
+     * Sets background colors to priority buttons according to their priority
+     */
     void setBackgroundColorsToPriorityBtns() {
         vh.lowPrioWrapper.setBackgroundColor(Utils.getColor(context, TodoPriority.LOW.getColorId()));
         vh.medPrioWrapper.setBackgroundColor(Utils.getColor(context, TodoPriority.MEDIUM.getColorId()));
         vh.highPrioWrapper.setBackgroundColor(Utils.getColor(context, TodoPriority.HIGH.getColorId()));
     }
 
+    /**
+     * Shows time picker dialog
+     * @param isStartTime
+     */
     private void showTimePickerDialog(final boolean isStartTime) {
         Calendar calendar = Calendar.getInstance();
         TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
@@ -199,6 +227,10 @@ public class CreateTodoController {
         timePickerDialog.show();
     }
 
+    /**
+     * Shows date picker dialog
+     * @param isStartDate
+     */
     private void showDatePickerDialog(final boolean isStartDate) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
@@ -217,6 +249,10 @@ public class CreateTodoController {
         datePickerDialog.show();
     }
 
+    /**
+     * Preffils tudu into view
+     * @param todo
+     */
     public void fillTodoIntoView(Todo todo) {
         vh.todoTitle.setText(todo.getTitle());
         selectPriority(todo.getPriority());
@@ -237,6 +273,10 @@ public class CreateTodoController {
         vh.description.setText(todo.getDescription());
     }
 
+    /**
+     * Selects priority
+     * @param priority
+     */
     private void selectPriority(TodoPriority priority) {
         if (priority.equals(TodoPriority.LOW)) {
             vh.lowPrioIcon.setVisibility(View.VISIBLE);
@@ -256,6 +296,10 @@ public class CreateTodoController {
     }
 
 
+    /**
+     * Prefills start and end date
+     * @param currentDate
+     */
     public void prefillStartAndEndDate(String currentDate) {
         vh.createTodoDateStart.setText(currentDate);
         vh.createTodoDateEnd.setText(currentDate);

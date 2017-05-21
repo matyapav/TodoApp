@@ -12,8 +12,7 @@ import cz.matyapav.todoapp.R;
 import cz.matyapav.todoapp.ViewHolder;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Holder for views in CreateTodoActivity
  */
 public class CreateTodoViewHolder extends ViewHolder {
 

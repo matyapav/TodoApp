@@ -81,13 +81,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -114,21 +107,19 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_todo_today) {
             fragmentClass = TodoDayFragment.class;
         } else if (id == R.id.nav_todo_all) {
-            // Show all
             fragmentClass = TodoAllFragment.class;
         } else if (id == R.id.nav_buzer_today) {
-            // Show buzer today
+            // TODO Show buzer today
         } else if (id == R.id.nav_buzer_list) {
-            // Show buzer list
+            // TODO Show buzer list
         } else if (id == R.id.nav_ideas) {
-            // Show ideas
+            // TODO Show ideas
         } else if (id == R.id.nav_settings) {
             fragmentClass = SettingsFragment.class;
-            // Show settings
         }else if (id == R.id.nav_help) {
-            // Show help
+            // TODO Show help
         }else if (id == R.id.nav_about) {
-            // Show about
+            // TODO Show about
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();

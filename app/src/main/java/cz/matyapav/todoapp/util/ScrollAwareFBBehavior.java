@@ -8,11 +8,11 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * @author Pavel Matyáš (matyapav@fel.cvut.cz).
- * @since 1.0.0..
+ * Determines behavior of floating action button on scroll
  */
 public class ScrollAwareFBBehavior extends FloatingActionButton.Behavior {
 
+    //looks like it is not used because it is referenced from layout XML file
     public ScrollAwareFBBehavior(Context context, AttributeSet attrs) {
         super();
     }

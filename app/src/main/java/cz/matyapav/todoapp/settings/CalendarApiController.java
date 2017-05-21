@@ -2,7 +2,6 @@ package cz.matyapav.todoapp.settings;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -11,14 +10,11 @@ import com.google.api.services.calendar.CalendarScopes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import cz.matyapav.todoapp.R;
-import cz.matyapav.todoapp.todo.model.Todo;
 import cz.matyapav.todoapp.todo.model.TodoDay;
-import cz.matyapav.todoapp.util.Constants;
 import cz.matyapav.todoapp.util.Utils;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
